@@ -15,6 +15,15 @@ cscope
 cflow
 calltree
 
+zt			Like "z<CR>", but leave the cursor in the same
+			column.  {not in Vi}
+zz			Like "z.", but leave the cursor in the same column.
+			Careful: If caps-lock is on, this command becomes
+			"ZZ": write buffer and exit!  {not in Vi}
+zb			Like "z-", but leave the cursor in the same column.
+			{not in Vi}
+
+
 # Plugins
 ~/.vimrc
 

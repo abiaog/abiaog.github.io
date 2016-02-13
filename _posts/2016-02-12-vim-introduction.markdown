@@ -31,6 +31,19 @@ Sublime Text
 # Plugins
 ~/.vimrc
 
+	Plugin 'VundleVim/Vundle.vim'
+	Plugin 'tpope/vim-fugitive'
+	Plugin 'vimwiki'
+	Plugin 'sotte/presenting.vim'
+	Plugin 'plantuml-syntax'
+	Plugin 'L9'
+	Plugin 'Conque-Shell'
+	Plugin 'Mark'
+	Plugin 'pathogen.vim'
+	Plugin 'mileszs/ack.vim'
+	Plugin 'c.vim'
+	Plugin 'git://git.wincent.com/command-t.git'
+	Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 # vim script 
 

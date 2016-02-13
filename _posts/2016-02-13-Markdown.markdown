@@ -1,0 +1,11 @@
+# Syntax
+[Syntax](http://daringfireball.net/projects/markdown/syntax)
+
+
+*   Red
+*   Green
+*   Blue
+
+[simple syntax](http://jingyan.baidu.com/article/9f7e7ec0510fcc6f29155460.html)
+
+![svg](_includes/icon-github.svg)

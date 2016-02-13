@@ -1,12 +1,12 @@
+# Text Editor
+[VIM](http://www.vim.org)   
+emacs   
+[Atom](https://atom.io/)   
+Sublime Text   
+
 # VIM
 
-           **presenting.vim**
-
-          a presentation tool
-
-                for vim
-
-[This is the offical site of vim](http://www.vim.org)
+[Offical site of vim](http://www.vim.org)
 
 [Plugins](http://vim-scripts.org/)
 

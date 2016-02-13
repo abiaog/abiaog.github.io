@@ -1,5 +1,10 @@
+---
+layout: post
+title:  "rootfs"
+date:   2016-02-13 
+categories: jekyll update
+---
 # Call Tree(kernel 2.6.34)
-------
 	asmlinkage void __init start_kernel(void)
 		vfs_caches_init(totalram_pages);
 		  mnt_init();
@@ -10,6 +15,5 @@
 
 
 # Reference
-------
 - [rootfs](http://blog.csdn.net/kevin_hcy/article/details/17663341)
 

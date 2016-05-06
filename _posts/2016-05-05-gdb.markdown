@@ -97,9 +97,32 @@ Output,
 	Type "apropos word" to search for commands related to "word".
 	Command name abbreviations are allowed if unambiguous.
 
+Frequently used commands,
+	b
+	p
+	bt
+	r
+	c
+	n
+	s
+	watch <var>
+	save breakpoints -- Save current breakpoint definitions as a script
+	source [-s] [-v] FILE
+
+# .gdbinit
+
+[.gdbinit](/code_for_post/gdb/.gdbinit)   
+	gdb -x .gdbinit main
+
+
 # gdbserver
 
 # gdb -tui 
+
+# ddd
+GNU DDD is a graphical front-end for command-line debuggers such as GDB, DBX, WDB, Ladebug, JDB, XDB, the Perl debugger, the bash debugger bashdb, the GNU Make debugger remake, or the Python debugger pydb. Besides ``usual'' front-end features such as viewing source texts, DDD has become famous through its interactive graphical data display, where data structures are displayed as graphs.
+
+[Debugging with DDD](http://www.gnu.org/software/ddd/manual/html_mono/ddd.html)
 
 # Debugging with GDB in Emacs
 

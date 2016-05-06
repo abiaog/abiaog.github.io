@@ -5,6 +5,15 @@ date:   2016-05-05
 categories: jekyll update
 ---
 
+# Richard Stallman 
+
+Richard Stallman was the original author of gdb, and of many other gnu programs.
+Stallman launched the GNU Project, founded the Free Software Foundation, developed the GNU Compiler Collection and GNU Emacs, and wrote the GNU General Public License.
+
+# GNU Debugger
+
+The GNU Debugger, usually called just GDB and named gdb as an executable file, is the standard debugger for the GNU operating system. However, its use is not strictly limited to the GNU operating system; it is a portable debugger that runs on many Unix-like systems and works for many programming languages, including Ada, C, C++, Objective-C, Free Pascal, Fortran, Java and partially others.
+
 # Core Dump Example
 
 [gdb_core_dump.c](/code_for_post/gdb/gdb_core_dump.c)   
@@ -88,16 +97,24 @@ Output,
 	Type "apropos word" to search for commands related to "word".
 	Command name abbreviations are allowed if unambiguous.
 
+# gdbserver
 
 # gdb -tui 
 
+# Debugging with GDB in Emacs
+
+# Debugging with GDB in VIM
 
 
 # Reference
 [使用gdb和core dump迅速定位段错误](http://my.oschina.net/michaelyuanyuan/blog/68618)
+
 [gdb的gui用法](http://www.cnblogs.com/xuxm2007/archive/2011/08/13/2137055.html)
+
 [A GDB Tutorial with Examples](http://www.cprogramming.com/gdb.html)
+
 https://sourceware.org/gdb/current/onlinedocs/gdb/
+
 https://www.cs.cmu.edu/~gilpin/tutorial/
 
 

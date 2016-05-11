@@ -124,6 +124,10 @@ GNU DDD is a graphical front-end for command-line debuggers such as GDB, DBX, WD
 
 [Debugging with DDD](http://www.gnu.org/software/ddd/manual/html_mono/ddd.html)
 
+# Debugging Programs with Multiple Threads
+https://sourceware.org/gdb/onlinedocs/gdb/Threads.html
+http://www.cnblogs.com/xuxm2007/archive/2011/04/01/2002162.html
+
 # Debugging with GDB in Emacs
 
 # Debugging with GDB in VIM

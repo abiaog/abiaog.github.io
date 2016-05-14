@@ -92,10 +92,18 @@ The ":while" command starts a loop.  The generic form is:
 use this command: >
 	:let
 
+	let @"=expand("%:p")
+
 
 # tutor 
 	:h tutor
 
+# PlantUML
+
+[Free UML Diagram Tool](http://plantuml.com/)
+
+# taskjuggler
+[The TaskJuggler Project Management Software](http://www.taskjuggler.org/)
 
 # The End
 

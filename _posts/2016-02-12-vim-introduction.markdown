@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Text Editor"
+title:  "The Plain Text Tools Introduction"
 date:   2016-02-12 
 categories: jekyll update
 ---
@@ -104,6 +104,12 @@ use this command: >
 
 # taskjuggler
 [The TaskJuggler Project Management Software](http://www.taskjuggler.org/)
+
+# Question:
+
+	How to push employees use free sofeware instead of commecial sofeware(payware)?
+	Answer1: uninstall ******
+	Answer2: pay ******
 
 # The End
 

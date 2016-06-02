@@ -14,6 +14,59 @@ Stallman launched the GNU Project, founded the Free Software Foundation, develop
 
 The GNU Debugger, usually called just GDB and named gdb as an executable file, is the standard debugger for the GNU operating system. However, its use is not strictly limited to the GNU operating system; it is a portable debugger that runs on many Unix-like systems and works for many programming languages, including Ada, C, C++, Objective-C, Free Pascal, Fortran, Java and partially others.
 
+
+# An Example Debugging Session 
+
+[main.cc](/code_for_post/gdb/main.cc)   
+
+	g++ main.cpp -g -Wall -o main
+	gdb main
+
+# Help
+	(gdb) h
+	List of classes of commands:
+
+	aliases -- Aliases of other commands
+	breakpoints -- Making program stop at certain points
+	data -- Examining data
+	files -- Specifying and examining files
+	internals -- Maintenance commands
+	obscure -- Obscure features
+	running -- Running the program
+	stack -- Examining the stack
+	status -- Status inquiries
+	support -- Support facilities
+	tracepoints -- Tracing of program execution without stopping the program
+	user-defined -- User-defined commands
+
+	Type "help" followed by a class name for a list of commands in that class.
+	Type "help all" for the list of all commands.
+	Type "help" followed by command name for full documentation.
+	Type "apropos word" to search for commands related to "word".
+	Command name abbreviations are allowed if unambiguous.
+
+Frequently used commands,
+	b
+	p
+	bt
+	r
+	c
+	n
+	s
+	watch <var>
+	save breakpoints -- Save current breakpoint definitions as a script
+	source [-s] [-v] FILE
+
+# .gdbinit
+
+[.gdbinit](/code_for_post/gdb/.gdbinit)   
+	gdb -x .gdbinit main
+
+# gdbserver
+
+[power.c](/code_for_post/gdb/power.c)   
+[How to Debug Programs on Remote Server using GDBServer Example](http://www.thegeekstuff.com/2014/04/gdbserver-example/)
+
 # Core Dump Example
 
 [gdb_core_dump.c](/code_for_post/gdb/gdb_core_dump.c)   
@@ -66,61 +119,6 @@ Output,
 	#0  0x0804840f in do_it () at code_for_post/gdb/gdb_core_dump.c:29
 	#1  0x080483f8 in main () at code_for_post/gdb/gdb_core_dump.c:23
 	(gdb) 
-
-# An Example Debugging Session 
-
-[main.cc](/code_for_post/gdb/main.cc)   
-
-	g++ main.cpp -g -Wall -o main
-	gdb main
-
-# Help
-	(gdb) h
-	List of classes of commands:
-
-	aliases -- Aliases of other commands
-	breakpoints -- Making program stop at certain points
-	data -- Examining data
-	files -- Specifying and examining files
-	internals -- Maintenance commands
-	obscure -- Obscure features
-	running -- Running the program
-	stack -- Examining the stack
-	status -- Status inquiries
-	support -- Support facilities
-	tracepoints -- Tracing of program execution without stopping the program
-	user-defined -- User-defined commands
-
-	Type "help" followed by a class name for a list of commands in that class.
-	Type "help all" for the list of all commands.
-	Type "help" followed by command name for full documentation.
-	Type "apropos word" to search for commands related to "word".
-	Command name abbreviations are allowed if unambiguous.
-
-Frequently used commands,
-	b
-	p
-	bt
-	r
-	c
-	n
-	s
-	watch <var>
-	save breakpoints -- Save current breakpoint definitions as a script
-	source [-s] [-v] FILE
-
-# .gdbinit
-
-[.gdbinit](/code_for_post/gdb/.gdbinit)   
-	gdb -x .gdbinit main
-
-
-# gdbserver
-
-[power.c](/code_for_post/gdb/power.c)   
-[How to Debug Programs on Remote Server using GDBServer Example](http://www.thegeekstuff.com/2014/04/gdbserver-example/)
-
-
 
 
 # gdb -tui 

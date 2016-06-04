@@ -17,9 +17,14 @@ int main()
 long factorial(int n)
 {
 	long result(1);
-	while(n--)
+	//	while(n--)
+	//	{
+	//		result*=n;
+	//	}
+	while(n>0) //doesn't let n reach 0
 	{
 		result*=n;
+		n--;//decrements only after the evaluation
 	}
 	return result;
 }

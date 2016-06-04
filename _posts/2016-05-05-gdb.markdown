@@ -14,14 +14,6 @@ Stallman launched the GNU Project, founded the Free Software Foundation, develop
 
 The GNU Debugger, usually called just GDB and named gdb as an executable file, is the standard debugger for the GNU operating system. However, its use is not strictly limited to the GNU operating system; it is a portable debugger that runs on many Unix-like systems and works for many programming languages, including Ada, C, C++, Objective-C, Free Pascal, Fortran, Java and partially others.
 
-
-# An Example Debugging Session 
-
-[main.cc](/code_for_post/gdb/main.cc)   
-
-	g++ main.cpp -g -Wall -o main
-	gdb main
-
 # Help
 	(gdb) h
 	List of classes of commands:
@@ -48,7 +40,7 @@ The GNU Debugger, usually called just GDB and named gdb as an executable file, i
 Frequently used commands,
 	b
 	p
-	bt
+	bt 
 	r
 	c
 	n
@@ -56,6 +48,52 @@ Frequently used commands,
 	watch <var>
 	save breakpoints -- Save current breakpoint definitions as a script
 	source [-s] [-v] FILE
+
+# breakpoints
+
+delete breakpoints -- Delete some breakpoints or auto-display expressions
+disable -- Disable some breakpoints
+disable breakpoints -- Disable some breakpoints
+enable -- Enable some breakpoints
+enable breakpoints -- Enable some breakpoints
+
+
+	(gdb) info b
+	Num     Type           Disp Enb Address            What
+	1       breakpoint     keep y   0x0000000000400585 in main at power.c:7
+		breakpoint already hit 1 time
+	2       breakpoint     keep y   0x0000000000400598 in main at power.c:10
+		breakpoint already hit 9 times
+	3       breakpoint     keep y   0x0000000000400585 in main at power.c:7
+	(gdb) disable b
+	(gdb) info b
+	Num     Type           Disp Enb Address            What
+	1       breakpoint     keep n   0x0000000000400585 in main at power.c:7
+		breakpoint already hit 1 time
+	2       breakpoint     keep n   0x0000000000400598 in main at power.c:10
+		breakpoint already hit 9 times
+	3       breakpoint     keep n   0x0000000000400585 in main at power.c:7
+	(gdb) enable b
+	(gdb) info b
+	Num     Type           Disp Enb Address            What
+	1       breakpoint     keep y   0x0000000000400585 in main at power.c:7
+		breakpoint already hit 1 time
+	2       breakpoint     keep y   0x0000000000400598 in main at power.c:10
+		breakpoint already hit 9 times
+	3       breakpoint     keep y   0x0000000000400585 in main at power.c:7
+
+# backtrace
+(gdb) h bt
+Print backtrace of all stack frames, or innermost COUNT frames.
+With a negative argument, print outermost -COUNT frames.
+Use of the 'full' qualifier also prints the values of the local variables.
+
+# An Example Debugging Session 
+
+[main.cc](/code_for_post/gdb/main.cc)   
+
+	g++ main.cpp -g -Wall -o main
+	gdb main
 
 # .gdbinit
 
@@ -66,6 +104,34 @@ Frequently used commands,
 
 [power.c](/code_for_post/gdb/power.c)   
 [How to Debug Programs on Remote Server using GDBServer Example](http://www.thegeekstuff.com/2014/04/gdbserver-example/)
+
+# gdbserver --multi
+
+To start "gdbserver" without supplying an initial command to run or process ID to attach, use this command line option.  Then
+you can connect using "target extended-remote" and start the program you want to debug.  The syntax is:
+
+target> gdbserver --multi <comm>
+
+On target,
+
+	gdbserver --multi localhost:2000
+	Listening on port 2000
+
+On host,
+	(gdb) target extended-remote 192.168.1.105:2000
+	Remote debugging using 192.168.1.105:2000
+	(gdb) set remote exec-file power
+	(gdb) file power
+	Reading symbols from power...done.
+	(gdb) b main
+	Breakpoint 1 at 0x400585: file power.c, line 8.
+	(gdb) r
+	Starting program: /home/peter/work/src/abiaog.github.io/code_for_post/gdb/power 
+
+	Breakpoint 1, main () at power.c:8
+	8		printf("Program to calculate power\n");
+
+
 
 # Core Dump Example
 

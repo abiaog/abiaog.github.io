@@ -38,6 +38,7 @@ The GNU Debugger, usually called just GDB and named gdb as an executable file, i
 	Command name abbreviations are allowed if unambiguous.
 
 Frequently used commands,
+
 	b
 	p
 	bt 
@@ -52,9 +53,13 @@ Frequently used commands,
 # breakpoints
 
 delete breakpoints -- Delete some breakpoints or auto-display expressions
+
 disable -- Disable some breakpoints
+
 disable breakpoints -- Disable some breakpoints
+
 enable -- Enable some breakpoints
+
 enable breakpoints -- Enable some breakpoints
 
 
@@ -83,10 +88,11 @@ enable breakpoints -- Enable some breakpoints
 	3       breakpoint     keep y   0x0000000000400585 in main at power.c:7
 
 # backtrace
-(gdb) h bt
-Print backtrace of all stack frames, or innermost COUNT frames.
-With a negative argument, print outermost -COUNT frames.
-Use of the 'full' qualifier also prints the values of the local variables.
+
+	(gdb) h bt
+	Print backtrace of all stack frames, or innermost COUNT frames.
+	With a negative argument, print outermost -COUNT frames.
+	Use of the 'full' qualifier also prints the values of the local variables.
 
 # An Example Debugging Session 
 
@@ -98,19 +104,17 @@ Use of the 'full' qualifier also prints the values of the local variables.
 # .gdbinit
 
 [.gdbinit](/code_for_post/gdb/.gdbinit)   
+
 	gdb -x .gdbinit main
 
 # gdbserver
 
 [power.c](/code_for_post/gdb/power.c)   
-[How to Debug Programs on Remote Server using GDBServer Example](http://www.thegeekstuff.com/2014/04/gdbserver-example/)
 
 # gdbserver --multi
 
 To start "gdbserver" without supplying an initial command to run or process ID to attach, use this command line option.  Then
-you can connect using "target extended-remote" and start the program you want to debug.  The syntax is:
-
-target> gdbserver --multi <comm>
+you can connect using "target extended-remote" and start the program you want to debug.  
 
 On target,
 
@@ -118,6 +122,7 @@ On target,
 	Listening on port 2000
 
 On host,
+
 	(gdb) target extended-remote 192.168.1.105:2000
 	Remote debugging using 192.168.1.105:2000
 	(gdb) set remote exec-file power
@@ -126,7 +131,7 @@ On host,
 	(gdb) b main
 	Breakpoint 1 at 0x400585: file power.c, line 8.
 	(gdb) r
-	Starting program: /home/peter/work/src/abiaog.github.io/code_for_post/gdb/power 
+	Starting program: /home/peter/work/src/abc.github.io/code_for_post/gdb/power 
 
 	Breakpoint 1, main () at power.c:8
 	8		printf("Program to calculate power\n");
@@ -144,20 +149,20 @@ On host,
 
 Output,
 
-	root@baohua-VirtualBox:~/w/src/abiaog.github.io# gcc -g code_for_post/gdb/gdb_core_dump.c 
+	root@baohua-VirtualBox:~/w/src/abc.github.io# gcc -g code_for_post/gdb/gdb_core_dump.c 
 	code_for_post/gdb/gdb_core_dump.c: In function ‘do_it’:
 	code_for_post/gdb/gdb_core_dump.c:28:12: warning: initialization makes pointer from integer without a cast [enabled by default]
 	  char* p = 1; //定义一个字符指针变量a，指向地址1，这个地址肯定不是自己可以访问的，但是这行不会产生段错误
 		    ^
-	root@baohua-VirtualBox:~/w/src/abiaog.github.io# ./a.out 
+	root@baohua-VirtualBox:~/w/src/abc.github.io# ./a.out 
 	Segmentation fault (core dumped)
-	root@baohua-VirtualBox:~/w/src/abiaog.github.io# ll
+	root@baohua-VirtualBox:~/w/src/abc.github.io# ll
 	total 308
 	drwxrwx--- 1 root vboxsf   4096  5月  5 16:02 ./
 	drwxrwx--- 1 root vboxsf   4096  5月  5 15:59 ../
 	-rwxrwx--- 1 root vboxsf   8254  5月  5 16:02 a.out*
 	-rwxrwx--- 1 root vboxsf 221184  5月  5 16:02 core*
-	root@baohua-VirtualBox:~/w/src/abiaog.github.io# gdb ./a.out core 
+	root@baohua-VirtualBox:~/w/src/abc.github.io# gdb ./a.out core 
 	GNU gdb (Ubuntu 7.7-0ubuntu3.1) 7.7
 	Copyright (C) 2014 Free Software Foundation, Inc.
 	License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -209,6 +214,8 @@ http://www.cnblogs.com/xuxm2007/archive/2011/04/01/2002162.html
 [gdb的gui用法](http://www.cnblogs.com/xuxm2007/archive/2011/08/13/2137055.html)
 
 [A GDB Tutorial with Examples](http://www.cprogramming.com/gdb.html)
+
+[How to Debug Programs on Remote Server using GDBServer Example](http://www.thegeekstuff.com/2014/04/gdbserver-example/)
 
 https://sourceware.org/gdb/current/onlinedocs/gdb/
 

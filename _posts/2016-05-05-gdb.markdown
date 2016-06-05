@@ -45,7 +45,7 @@ Frequently used commands,
 	b
 	p
 	bt 
-        l
+	l
 	r
 	c
 	n
@@ -109,6 +109,15 @@ Delete breakpoints,
 	(gdb) info b
 	Num     Type           Disp Enb Address            What
 	2       breakpoint     keep y   0x000000000040058f in main at power.c:9
+
+# Conditional breakpoints
+
+[main.cc](https://www.cs.cmu.edu/~gilpin/tutorial/main.cc)
+
+(gdb) h condition
+Specify breakpoint number N to break only if COND is true.
+Usage is `condition N COND', where N is an integer and COND is an
+expression to be evaluated whenever breakpoint N is reached.
 
 
 # list 
@@ -278,8 +287,10 @@ GNU DDD is a graphical front-end for command-line debuggers such as GDB, DBX, WD
 [Debugging with DDD](http://www.gnu.org/software/ddd/manual/html_mono/ddd.html)
 
 # Debugging Programs with Multiple Threads
-https://sourceware.org/gdb/onlinedocs/gdb/Threads.html
-http://www.cnblogs.com/xuxm2007/archive/2011/04/01/2002162.html
+
+[Debugging Programs with Multiple Threads](https://sourceware.org/gdb/onlinedocs/gdb/Threads.html)
+
+[gdb 多线程调试](http://www.cnblogs.com/xuxm2007/archive/2011/04/01/2002162.html)
 
 # Debugging with GDB in Emacs
 
@@ -295,8 +306,8 @@ http://www.cnblogs.com/xuxm2007/archive/2011/04/01/2002162.html
 
 [How to Debug Programs on Remote Server using GDBServer Example](http://www.thegeekstuff.com/2014/04/gdbserver-example/)
 
-https://sourceware.org/gdb/current/onlinedocs/gdb/
+[Debugging with gdb](https://sourceware.org/gdb/current/onlinedocs/gdb/)
 
-https://www.cs.cmu.edu/~gilpin/tutorial/
+[Debugging Under Unix: gdb Tutorial](https://www.cs.cmu.edu/~gilpin/tutorial/)
 
 

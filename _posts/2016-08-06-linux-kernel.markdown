@@ -9,4 +9,30 @@ categories: jekyll update
 # build 
 
 # update grub
+
+On Ubuntu, you can get these tools by running:
+
+	sudo apt-get install libncurses5-dev gcc make git exuberant-ctags bc libssl-dev
+
+Downloading the latest stable tree
+
+First, checkout the stable kernel git repository:
+
+	git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+	cd linux-stable
+
+Next, find the latest stable kernel tag by running
+
+	git tag -l | less
+	git checkout -b 3.16 v3.16
+	cp /boot/config-3.16.0-50-generic .config
+	make -j4
+	sudo make modules_install install
+
+Update grub
+
 	sudo grub-mkconfig -o /boot/grub/grub.cfg  
+
+# Reference
+[LinuxNewbies](https://kernelnewbies.org/KernelBuild)
+

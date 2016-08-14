@@ -6,9 +6,7 @@ categories: jekyll update
 ---
 
 
-# build 
-
-# update grub
+# Replace Ubuntu kernel
 
 On Ubuntu, you can get these tools by running:
 
@@ -32,6 +30,12 @@ Next, find the latest stable kernel tag by running
 Update grub
 
 	sudo grub-mkconfig -o /boot/grub/grub.cfg  
+
+	reboot
+
+Use below command to check the version
+	dmesg | less
+	uname -a
 
 # Reference
 [LinuxNewbies](https://kernelnewbies.org/KernelBuild)

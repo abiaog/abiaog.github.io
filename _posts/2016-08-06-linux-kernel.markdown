@@ -37,6 +37,16 @@ Use below command to check the version
 	dmesg | less
 	uname -a
 
+# kennel newbies
+
+[kernel newbies](https://kernelnewbies.org/)
+
+# kdump
+
+[kdump](http://www.ibm.com/developerworks/cn/linux/l-cn-kdump1/)
+
+# kexec
+
 # Reference
 [LinuxNewbies](https://kernelnewbies.org/KernelBuild)
 

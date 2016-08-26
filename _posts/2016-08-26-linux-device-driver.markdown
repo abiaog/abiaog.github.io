@@ -8,8 +8,8 @@ categories: jekyll update
 # Hello World 
 Implement hello world driver based on Linux Device Driver Chapter2.
 code,
-  [hello.c](/code_for_post/ldd/hello.c)
-  [Makefile](/code_for_post/ldd/Makefile)
+  [hello.c](/code_for_post/ldd/hello/hello.c)
+  [Makefile](/code_for_post/ldd/hello/Makefile)
 
 make as below,
   root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# ll
@@ -55,3 +55,5 @@ view the log from /var/log/syslog,
   Aug 26 16:00:06 peter-VirtualBox kernel: [ 7242.631977] Goodbye, cruel world
   Aug 26 16:00:09 peter-VirtualBox kernel: [ 7245.632334] Hello, world
      
+# Reference
+[1](http://blog.chinaunix.net/uid-27012654-id-3862516.html)

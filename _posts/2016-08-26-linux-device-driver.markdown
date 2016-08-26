@@ -1,0 +1,57 @@
+---
+layout: post
+title:  "Linux Device Driver"
+date:   2016-08-26 
+categories: jekyll update
+---
+
+# Hello World 
+Implement hello world driver based on Linux Device Driver Chapter2.
+code,
+  [hello.c](/code_for_post/ldd/hello.c)
+  [Makefile](/code_for_post/ldd/Makefile)
+
+make as below,
+  root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# ll
+  total 16
+  drwxr-xr-x  2 root   root   4096  8月 26 15:58 ./
+  drwxrwxr-x 13 peter peter 4096  8月 26 15:26 ../
+  -rw-r--r--  1 root   root    292  8月 26 15:27 hello.c
+  -rw-r--r--  1 root   root    194  8月 26 15:55 Makefile
+  root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# make
+  make -C /lib/modules/4.0.0-rc1+/build M=/home/peter/develop/linux/drivers/char/hello modules
+  make[1]: Entering directory `/home/peter/develop/linux'
+    CC [M]  /home/peter/develop/linux/drivers/char/hello/hello.o
+    Building modules, stage 2.
+    MODPOST 1 modules
+    CC      /home/peter/develop/linux/drivers/char/hello/hello.mod.o
+    LD [M]  /home/peter/develop/linux/drivers/char/hello/hello.ko
+  make[1]: Leaving directory `/home/peter/develop/linux'
+  root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# ll
+  total 100
+  drwxr-xr-x  3 root   root    4096  8月 26 15:58 ./
+  drwxrwxr-x 13 peter peter  4096  8月 26 15:26 ../
+  -rw-r--r--  1 root   root     292  8月 26 15:27 hello.c
+  -rw-r--r--  1 root   root    1999  8月 26 15:58 hello.ko
+  -rw-r--r--  1 root   root     293  8月 26 15:58 .hello.ko.cmd
+  -rw-r--r--  1 root   root     454  8月 26 15:58 hello.mod.c
+  -rw-r--r--  1 root   root    1432  8月 26 15:58 hello.mod.o
+  -rw-r--r--  1 root   root   25872  8月 26 15:58 .hello.mod.o.cmd
+  -rw-r--r--  1 root   root    1152  8月 26 15:58 hello.o
+  -rw-r--r--  1 root   root   25764  8月 26 15:58 .hello.o.cmd
+  -rw-r--r--  1 root   root     194  8月 26 15:55 Makefile
+  -rw-r--r--  1 root   root      62  8月 26 15:58 modules.order
+  -rw-r--r--  1 root   root       0  8月 26 15:58 Module.symvers
+  drwxr-xr-x  2 root   root    4096  8月 26 15:58 .tmp_versions/
+  root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# insmod ./hello.ko 
+  insmod: ERROR: could not insert module ./hello.ko: File exists
+  root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# rmmod hello.ko
+  root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# insmod ./hello.ko 
+  root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# 
+
+view the log from /var/log/syslog,
+  Aug 26 15:50:05 peter-VirtualBox kernel: [ 6641.824580] Hello, world
+  Aug 26 15:55:01 peter-VirtualBox CRON[16299]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
+  Aug 26 16:00:06 peter-VirtualBox kernel: [ 7242.631977] Goodbye, cruel world
+  Aug 26 16:00:09 peter-VirtualBox kernel: [ 7245.632334] Hello, world
+     

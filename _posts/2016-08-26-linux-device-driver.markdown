@@ -13,6 +13,8 @@ Implement hello world driver based on Linux Device Driver Chapter2.
 
 [Makefile](/code_for_post/ldd/hello/Makefile)
 
+[Makefile_1](/code_for_post/ldd/hello/Makefile_1)
+
 make as below,
 
 	  root@peter-VirtualBox:/home/peter/develop/linux/drivers/char/hello# ll

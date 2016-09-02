@@ -14,6 +14,10 @@ http://blog.csdn.net/qhuwn/article/details/51016751
 
 https://bramp.github.io/js-sequence-diagrams/
 
+http://www.jianshu.com/p/6c6d209aa0e3
+
+https://github.com/ghiculescu/jekyll-table-of-contents
+
 # Syntax
 [Syntax](http://daringfireball.net/projects/markdown/syntax)
 

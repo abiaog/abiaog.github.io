@@ -34,12 +34,13 @@ Update grub
 	reboot
 
 Use below command to check the version
+
 	dmesg | less
+
 	uname -a
 
-# kennel newbies
+# kernel newbies
 
-[kernel newbies](https://kernelnewbies.org/)
 
 # kdump
 
@@ -48,5 +49,8 @@ Use below command to check the version
 # kexec
 
 # Reference
-[LinuxNewbies](https://kernelnewbies.org/KernelBuild)
+
+[KernelBuild](https://kernelnewbies.org/KernelBuild)
+
+[FirstKernelPatch](https://kernelnewbies.org/FirstKernelPatch)
 

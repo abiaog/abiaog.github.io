@@ -61,6 +61,9 @@ view the log from /var/log/syslog,
 	  Aug 26 16:00:06 peter-VirtualBox kernel: [ 7242.631977] Goodbye, cruel world
 	  Aug 26 16:00:09 peter-VirtualBox kernel: [ 7245.632334] Hello, world
      
+# Kconfig
+
+
 # Reference
 [Hello World](http://blog.chinaunix.net/uid-27012654-id-3862516.html)
 

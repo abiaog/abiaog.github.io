@@ -50,7 +50,7 @@ This sample output shows that BitBake could not find the conf/bitbake.conf file 
 
 ## Creating conf/bitbake.conf
 
-[conf/bitbake.conf](/code_for_post/bitbake/examples/hello/conf/bitbake.conf)
+[hello/conf/bitbake.conf](/code_for_post/bitbake/examples/hello/conf/bitbake.conf)
 
 For more information on the bitbake.conf, see http://hambedded.org/blog/2012/11/24/from-bitbake-hello-world-to-an-image/#an-overview-of-bitbakeconf
 
@@ -98,7 +98,7 @@ The minimal task that BitBake runs is the do_build task. This is all the example
 	peter@peter-ThinkPad-T430:~/work/examples/hello$ vim classes/base.bbclass
 
 
-[conf/bitbake.conf](/code_for_post/bitbake/examples/hello/classes/base.bbclass)
+[hello/conf/bitbake.conf](/code_for_post/bitbake/examples/hello/classes/base.bbclass)
 
 
 ## Run Bitbake
@@ -118,12 +118,12 @@ Note
 
 Minimally, you need a recipe file and a layer configuration file in your layer. The configuration file needs to be in the conf directory inside the layer. 
 
-[mylayer/conf/layer.conf]()
+[mylayer/conf/layer.conf](/code_for_post/bitbake/examples/mylayer/conf/layer.conf)
 
 You need to create the recipe file next. Inside your layer at the top-level, use an editor and create a recipe file named printhello.bb that has the following: 
 
 
-[mylayer/printhello.bb]()
+[mylayer/printhello.bb](/code_for_post/bitbake/examples/mylayer/printhello.bb)
 
 
 ## Run Bitbake With a Target
@@ -132,8 +132,6 @@ You need to create the recipe file next. Inside your layer at the top-level, use
 	ERROR: no recipe files to build, check your BBPATH and BBFILES?
 
 	Summary: There was 1 ERROR message shown, returning a non-zero exit code.
-
-
 
 
 
@@ -147,7 +145,7 @@ BitBake uses the conf/bblayers.conf file to locate layers needed for the project
 Set your working directory to the hello/conf directory and then create the bblayers.conf file so that it contains the following: 
 
 
-[conf/bblayers.conf]()
+[hello/conf/bblayers.conf](/code_for_post/bitbake/examples/hello/conf/bblayers.conf)
 
 
 
@@ -170,7 +168,8 @@ Set your working directory to the hello/conf directory and then create the bblay
 
 
 
-	Note
+### Note
+
 	After the first execution, re-running bitbake printhello again will not result in a BitBake run that prints the same console output. The reason for this is that the first time the printhello.bb recipe's do_build task executes successfully, BitBake writes a stamp file for the task. Thus, the next time you attempt to run the task using that same bitbake command, BitBake notices the stamp and therefore determines that the task does not need to be re-run. If you delete the tmp directory or run bitbake -c clean printhello and then re-run the build, the "Hello, World!" message will be printed again.
 
 

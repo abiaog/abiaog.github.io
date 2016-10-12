@@ -61,6 +61,14 @@ view the log from /var/log/syslog,
 	  Aug 26 16:00:06 peter-VirtualBox kernel: [ 7242.631977] Goodbye, cruel world
 	  Aug 26 16:00:09 peter-VirtualBox kernel: [ 7245.632334] Hello, world
      
+# ioctl
+
+ioctl() is one of the remaining parts of the kernel which runs under the Big Kernel Lock (BKL). In the past, the usage of the BKL has made it possible for long-running ioctl() methods to create long latencies for unrelated processes.
+
+## What is the difference between ioctl(), unlocked_ioctl() and compat_ioctl()?
+
+http://unix.stackexchange.com/questions/4711/what-is-the-difference-between-ioctl-unlocked-ioctl-and-compat-ioctl
+
 # Reference
 [Hello World](http://blog.chinaunix.net/uid-27012654-id-3862516.html)
 

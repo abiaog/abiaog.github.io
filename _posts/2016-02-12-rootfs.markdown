@@ -17,3 +17,5 @@ categories: jekyll update
 # Reference
 - [rootfs](http://blog.csdn.net/kevin_hcy/article/details/17663341)
 
+- [ramfs, rootfs and initramfs - The Linux Kernel Archives](https://www.kernel.org/doc/Documentation/filesystems/ramfs-rootfs-initramfs.txt)
+

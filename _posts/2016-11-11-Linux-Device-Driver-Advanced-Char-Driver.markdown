@@ -9,7 +9,7 @@ categories: jekyll update
 
 ioctl() is one of the remaining parts of the kernel which runs under the Big Kernel Lock (BKL). In the past, the usage of the BKL has made it possible for long-running ioctl() methods to create long latencies for unrelated processes.
 
-Follows an explanation of the patch that introduced unlocked_ioctl and compat_ioctl into 2.6.11. The removal of the ioctl field happened a lot later, in 2.6.36.
+Follows an explanation of the patch that introduced `unlocked_ioctl` and `compat_ioctl` into 2.6.11. The removal of the ioctl field happened a lot later, in 2.6.36.
 
 Explanation: When ioctl was executed, it took the Big Kernel Lock (BKL), so nothing else could execute at the same time. This is very bad on a multiprocessor machine, so there was a big effort to get rid of the BKL. First, unlocked_ioctl was introduced. It lets each driver writer choose what lock to use instead. This can be difficult, so there was a period of transition during which old drivers still worked (using ioctl) but new drivers could use the improved interface (unlocked_ioctl). Eventually all drivers were converted and ioctl could be removed.
 
@@ -87,6 +87,7 @@ convention at all.
 ### The Return Value
 
 -ENOTTY: "inappropriate ioctl for device"
+
 -EINVAL: "Invalid argument"
 
 
@@ -97,12 +98,15 @@ convention at all.
 
 
 # Kernel version
+
 `uname -a`
+
 	peter@peter-ThinkPad-T430:~/work/src/linux/linux/drivers/char/scull$ uname -a
 	Linux peter-ThinkPad-T430 3.16.0 #2 SMP Sun Aug 7 18:04:04 CST 2016 x86_64 x86_64 x86_64 GNU/Linux
 
 
 # Error
+
 	peter@peter-ThinkPad-T430:~/work/src/linux/linux/drivers/char/scull$ make
 	make -C /lib/modules/3.16.0/build M=/home/peter/work/src/linux/linux/drivers/char/scull LDDINC=/home/peter/work/src/linux/linux/drivers/char/scull/../include modules
 	make[1]: Entering directory `/home/peter/work/src/linux/linux'

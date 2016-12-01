@@ -96,6 +96,51 @@ convention at all.
 
 ### Using the ioctl Argument
 
+	/**
+	 * access_ok: - Checks if a user space pointer is valid
+	 * @type: Type of access: %VERIFY_READ or %VERIFY_WRITE.  Note that
+	 *        %VERIFY_WRITE is a superset of %VERIFY_READ - if it is safe
+	 *        to write to a block, it is always safe to read from it.
+	 * @addr: User space pointer to start of block to check
+	 * @size: Size of block to check
+	 *
+	 * Context: User context only.  This function may sleep.
+	 *
+	 * Checks if a pointer to a block of memory in user space is valid.
+	 *
+	 * Returns true (nonzero) if the memory block may be valid, false (zero)
+	 * if it is definitely invalid.
+	 *
+	 * Note that, depending on architecture, this function probably just
+	 * checks that the pointer is in the user space range - after calling
+	 * this function, memory access functions may still return -EFAULT.
+	 */
+	#define access_ok(type, addr, size) \
+		likely(!__range_not_ok(addr, size, user_addr_max()))
+
+# Simple Sleeping
+
+[sleepy.c](/code_for_post/ldd/examples/misc-modules/sleepy.c)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Kernel version
 

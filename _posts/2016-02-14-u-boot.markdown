@@ -1,3 +1,23 @@
+
+
+
+	git clone git://git.denx.de/u-boot.git
+	cd u-boot/
+	git tag -l
+	git checkout -b 201009 v2010.09
+	git branch
+	
+ 
+Makefile,
+
+	MKCONFIG        := $(SRCTREE)/mkconfig
+
+	%_config::      unconfig
+	    @$(MKCONFIG) -A $(@:_config=)
+
+
+`make zynq_zed_config` expands to `mkconfig -A zynq_zed`
+
 # U-Boot
 [Source Code](http://www.denx.de/wiki/U-Boot/SourceCode)
 

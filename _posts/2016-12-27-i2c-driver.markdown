@@ -45,6 +45,27 @@ driver 指针指向该 i2c_driver ，并会调用 i2c_adapter 的 client_registe
 i2c_adpater 与 i2c_client 的关系与 I2C 硬件体系中适配器和设备的关系一致，即 i2c_client 依附于 i2c_adpater 。由于一个适配器上可以连接多个 I2C 设备，所以一个 i2c_adpater 也可以被多个 i2c_client 依附， i2c_adpater 中包括依附于它的 i2c_client 的链表。
 
 
+# Call Tree 
+
+	struct bus_type i2c_bus_type = {
+		.name		= "i2c",
+		.match		= i2c_device_match,
+		.probe		= i2c_device_probe,
+		.remove		= i2c_device_remove,
+		.shutdown	= i2c_device_shutdown,
+	};
+
+	static int i2c_device_match(struct device *dev, struct device_driver *drv)
+	{
+		struct i2c_client	*client = i2c_verify_client(dev);
+		struct i2c_driver	*driver;
+
+		driver = to_i2c_driver(drv);
+		/* match on an id table if there is one */
+		if (driver->id_table)
+			return i2c_match_id(driver->id_table, client) != NULL;
+	}
+
 
 # Call Tree of i2c_transfer()
 
@@ -131,6 +152,20 @@ drivers/i2c/busses/i2c-s3c2410.c
 	}
 
 
+# U-Boot i2c commands
+
+	=>?
+		// display all commands
+	=> i2c
+	i2c - I2C sub-system
+
+	Usage:
+	i2c dev [dev] - show or set current I2C bus
+	i2c probe [address] - test for and show device(s) on the I2C bus
+
+
+
+
 # Reference
 
 
@@ -144,9 +179,12 @@ drivers/i2c/busses/i2c-s3c2410.c
 
 [I2C驱动之总线接口i2c_transfer](http://blog.csdn.net/u013427264/article/details/42777091)
 
+[U-Boot下的I2C设备的读写](http://blog.sina.com.cn/s/blog_6836cbf70100qe4i.html)
 
 commit c517d838eb7d07bbe9507871fab3931deccff539
+
 Author: Linus Torvalds <torvalds@linux-foundation.org>
+
 Date:   Sun Feb 22 18:21:14 2015 -0800
 
     Linux 4.0-rc1

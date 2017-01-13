@@ -166,7 +166,7 @@ drivers/i2c/busses/i2c-s3c2410.c
 
 
 
-![I2C通信流程解析](http://abiaog.github.io/jekyll/update/2016/12/27/i2c-driver/i2c-communicate.jpg)
+![I2C通信流程解析](http://c.51hei.com/d/forum/201309/28/151347ngefv59bv5me0bpk.jpg)
 
 
 

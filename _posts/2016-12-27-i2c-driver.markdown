@@ -165,7 +165,8 @@ drivers/i2c/busses/i2c-s3c2410.c
 
 
 
-![](i2c-driver/i2c-communicate.jpg)
+
+![I2C通信流程解析](http://abiaog.github.io/jekyll/update/2016/12/27/i2c-driver/i2c-communicate.jpg)
 
 
 

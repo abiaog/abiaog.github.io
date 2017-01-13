@@ -165,6 +165,10 @@ drivers/i2c/busses/i2c-s3c2410.c
 
 
 
+![](i2c-driver/i2c-communicate.jpg)
+
+
+
 
 # Reference
 
@@ -180,6 +184,8 @@ drivers/i2c/busses/i2c-s3c2410.c
 [I2C驱动之总线接口i2c_transfer](http://blog.csdn.net/u013427264/article/details/42777091)
 
 [U-Boot下的I2C设备的读写](http://blog.sina.com.cn/s/blog_6836cbf70100qe4i.html)
+
+[I2C总线与EEPROM](http://www.51hei.com/bbs/dpj-22299-1.html)
 
 commit c517d838eb7d07bbe9507871fab3931deccff539
 

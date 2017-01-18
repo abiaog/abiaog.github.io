@@ -1,0 +1,21 @@
+---
+layout: post
+title:  "QEMU"
+date:   2017-01-18 
+categories: jekyll update
+---
+
+# Quit QEMU
+Ctrl+A+X
+
+
+# run-lcd.sh
+
+qemu-system-arm -sd vexpress.img -M vexpress-a9 -m 512M -kernel zImage -dtb vexpress-v2p-ca9.dtb  -append "init=/linuxrc root=/dev/mmcblk0p1 rw rootwait" -net nic -net user
+
+
+# Reference
+
+[QEMU实验平台](http://book.2cto.com/201508/55133.html)
+
+

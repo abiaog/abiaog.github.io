@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "Linux Kernel"
+title:  "How to Replace Ubuntu Kernel"
 date:   2016-08-06 
 categories: jekyll update
 ---
 
 
-# Replace Ubuntu kernel
+# Replace Ubuntu Kernel
 
 On Ubuntu, you can get these tools by running:
 

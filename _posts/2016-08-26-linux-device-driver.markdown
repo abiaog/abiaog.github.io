@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Linux Device Driver"
+title:  "Linux Device Driver -- Hello World"
 date:   2016-08-26 
 categories: jekyll update
 ---
@@ -71,7 +71,13 @@ http://unix.stackexchange.com/questions/4711/what-is-the-difference-between-ioct
 
 # Kconfig
 
+# FAQ
+
+## How to deal with driver build failed?
+
+Double check .config to make sure that the .config is compatible with current platform and kernel version.
 
 # Reference
+
 [Hello World](http://blog.chinaunix.net/uid-27012654-id-3862516.html)
 

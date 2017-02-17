@@ -176,6 +176,16 @@ drivers/i2c/busses/i2c-s3c2410.c
 停止信号：UART通信的停止位是一位固定的高电平信号；而I2C通信停止信号的定义是SCL为高电平期间，SDA由低电平向高电平变化产生一个上升沿，表示结束信号，如图中的stop部分所示。
 
 
+# How to debug dump?
+
+## Example
+
+[Linux内核栈信息获取与理解](http://blog.csdn.net/ricks_wu/article/details/19897237)
+
+
+
+
+
 # Reference
 
 

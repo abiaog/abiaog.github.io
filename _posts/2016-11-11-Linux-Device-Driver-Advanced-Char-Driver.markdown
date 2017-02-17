@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Linux Device Driver --- Advanced Char Driver"
-date:   2016-11-11 
+date:   2016-11-11
 categories: jekyll update
 ---
 
@@ -123,19 +123,49 @@ convention at all.
 [sleepy.c](/code_for_post/ldd/examples/misc-modules/sleepy.c)
 
 
+# Blocking and Nonblocking Operations
+
+O_NONBLOCK
+
+Only the read, write, and open file operation are affected by the nonblocking flag.
+
+# How to enable dynamic debug?
+
+Refer to  `Documentation/dynamic-debug-howto.txt` under source tree.
+
+[如何输出dev_dbg log](http://blog.csdn.net/armlinuxtech/article/details/50729070)
+
+[Linux内核里的DebugFS](http://www.cnblogs.com/wwang/archive/2011/01/17/1937609.html)
 
 
 
 
 
 
+# How to test driver?
+
+[Linux device driver functional testing](http://stackoverflow.com/questions/11347027/linux-device-driver-functional-testing)
+
+[Avocado - Automated Testing Framework](http://avocado-framework.github.io/)
+
+[Unit testing device drivers](http://stackoverflow.com/questions/1957212/unit-testing-device-drivers0)
 
 
 
 
 
+# How to find the major/minor numbers for your device
+
+cat /proc/devices
 
 
+
+
+# proc_create
+
+[proc_create的使用方法](http://blog.csdn.net/njuitjf/article/details/16940865)
+
+# strace
 
 
 
@@ -170,8 +200,7 @@ convention at all.
 
 # Reference
 
-[What is the difference between ioctl(), unlocked_ioctl() and compat_ioctl()?
-](http://unix.stackexchange.com/questions/4711/what-is-the-difference-between-ioctl-unlocked-ioctl-and-compat-ioctl)
+[What is the difference between ioctl(), unlocked_ioctl() and compat_ioctl()?](http://unix.stackexchange.com/questions/4711/what-is-the-difference-between-ioctl-unlocked-ioctl-and-compat-ioctl)
 
 [ldd3-examples-3.x](https://github.com/duxing2007/ldd3-examples-3.x)
 

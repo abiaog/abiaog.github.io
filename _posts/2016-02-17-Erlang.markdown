@@ -1,5 +1,9 @@
-
-
+---
+layout: post
+title:  "Erlang"
+date:   2016-02-17 
+categories: jekyll update
+---
 
 
 # Reference

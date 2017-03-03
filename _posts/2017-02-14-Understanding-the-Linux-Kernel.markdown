@@ -11,12 +11,16 @@ categories: jekyll update
 ## Memory Addresses
 
 * Logical address
+
 	Each logical address consists of a `segment` and an `offset` that denotes the distance from the start of the segment to the actual address.
+
 * Linear address(also known as virtual address)
+
 	
 * Physical address
 
 	Logical address -> |segmentation unit| -> Linear address -> | paging unit| -> Physical address
+
 		Figure 2-1. Logical address translation
 
 ## Segment Selectors and Segmentation Registers
@@ -50,9 +54,12 @@ In uniprocessor systems there is only one GDT, while in multiprocessor systems t
 
 Task State Segment(TSS), different for each processor in the system.
 
-[page frames](http://stackoverflow.com/questions/11783981/is-number-of-frame-number-of-pageslinux])
+
+### Reference
 
 [Why is page size 4 kb in most operating systems?](https://www.quora.com/Why-is-page-size-4-kb-in-most-operating-systems)
+
+[Why is page size 4KB](http://stackoverflow.com/questions/11783981/is-number-of-frame-number-of-pageslinux])
 
 [how is page size determined in virtual address space?](http://unix.stackexchange.com/questions/128213/how-is-page-size-determined-in-virtual-address-space)
 

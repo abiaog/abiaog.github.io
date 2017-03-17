@@ -18,4 +18,9 @@ qemu-system-arm -sd vexpress.img -M vexpress-a9 -m 512M -kernel zImage -dtb vexp
 
 [QEMU实验平台](http://book.2cto.com/201508/55133.html)
 
+[Booting Linux with U-Boot on QEMU ARM](https://balau82.wordpress.com/2010/04/12/booting-linux-with-u-boot-on-qemu-arm/#trackback-2970)
+
+[从零使用qemu模拟器搭建arm运行环境](http://blog.csdn.net/linyt/article/details/42504975)
+
+
 

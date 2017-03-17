@@ -277,6 +277,23 @@ FILE: ./include/linux/mmzone.h
 	} ____cacheline_internodealigned_in_smp;
 
 
+#### allocate pages
+
+FILE: ./include/linux/gfp.h
+
+	struct page *alloc_pages(gfp_t gfp_mask, unsigned int order)
+	  |
+	  |-> struct page *alloc_pages_current(gfp_t gfp, unsigned order) /*	@gfp:
+									   *		%GFP_USER   user allocation,
+									   *      	%GFP_KERNEL kernel allocation,
+									   *      	%GFP_HIGHMEM highmem allocation,
+									   *      	%GFP_FS     don't call back into a file system.
+									   *      	%GFP_ATOMIC don't sleep.
+									   */	@order: Power of two of allocation size in pages. 0 is a single page.
+ 
+"page_address" is used to convert physical page into logical address,
+
+	void *page_address(const struct page *page);
 
 
 

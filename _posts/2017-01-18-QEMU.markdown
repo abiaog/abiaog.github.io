@@ -5,19 +5,12 @@ date:   2017-01-18
 categories: jekyll update
 ---
 
-# Quit QEMU
-Ctrl+A+X
 
-
-# run-lcd.sh
-
-qemu-system-arm -sd vexpress.img -M vexpress-a9 -m 512M -kernel zImage -dtb vexpress-v2p-ca9.dtb  -append "init=/linuxrc root=/dev/mmcblk0p1 rw rootwait" -net nic -net user
-
-
-# step by step 
+# Setup ARM QEMU enviroment step by step 
 
 ## clone kernel code
 
+	git clone https://github.com/torvalds/linux.git
 
 ## Install toolchain 
 
@@ -29,7 +22,7 @@ qemu-system-arm -sd vexpress.img -M vexpress-a9 -m 512M -kernel zImage -dtb vexp
 
 	make CROSS_COMPILE=arm-linux-gnueabi- ARCH=arm vexpress_defconfig
 
-.config
+Generated `.config` as below,
 
 	#
 	# Automatically generated file; DO NOT EDIT.
@@ -52,7 +45,7 @@ qemu-system-arm -sd vexpress.img -M vexpress-a9 -m 512M -kernel zImage -dtb vexp
 
 	wget http://wiki.qemu-project.org/download/qemu-2.0.2.tar.bz2
 
-### prerequisites
+### Install prerequisites
 
 	sudo apt-get install zlib1g-dev
 	sudo apt-get install libglib2.0-0
@@ -276,6 +269,95 @@ Succeed,
 
 	qemu-system-arm -M vexpress-a9 -m 512M -kernel /home/peter/work/src/linux/linux/arch/arm/boot/zImage -nographic -append "console=ttyAMA0"
 
+Kernel launched, but error [Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)](/execution_result/qemu-system-arm--output.txt) occurred which means lack of rootfs.
+
+	VFS: Cannot open root device "(null)" or unknown-block(0,0): error -6
+	Please append a correct "root=" boot option; here are the available partitions:
+	1f00          131072 mtdblock0  (driver?)
+	Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+
+
+
+
+----------------------------------------- ready to remove begin
+
+## Creating rootfs
+
+本文制本的根文件系统 = busybox(包含基础的Linux命令)  + 运行库 + 几个字符设备
+
+本文直接使用SD卡做为存储空间，文件格式为ext3格式
+
+
+Download busybox,
+
+	wget http://www.busybox.net/downloads/busybox-1.20.2.tar.bz2
+
+		Or download from `http://linux.linuxidc.com/index.php?folder=cHViL0J1c3lib3g=` in China :).
+
+
+
+
+
+
+----------------------------------------- ready to remove end
+
+
+## rootfs
+
+Generate `_install` as below,
+
+	sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- defconfig
+	sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- install
+
+安装完成后，会在busybox目录下生成_install目录，该目录下的程序就是单板运行所需要的命令。
+
+[Building a Root File System using BusyBox](https://emreboy.wordpress.com/2012/12/20/building-a-root-file-system-using-busybox/#more-88). For cpio, refer to [cpio -o ](http://www.gnu.org/software/cpio/manual/cpio.html).
+
+
+Create image as below, 
+
+
+	sudo mkdir rootfs
+	sudo cp _install/* -r rootfs/
+	sudo mkdir rootfs/lib
+	sudo cp -P /usr/arm-linux-gnueabi/lib/* rootfs/lib/
+
+	sudo mknod rootfs/dev/tty1 c 4 1
+	sudo mknod rootfs/dev/tty2 c 4 2
+	sudo mknod rootfs/dev/tty3 c 4 3
+	sudo mknod rootfs/dev/tty4 c 4 4
+
+
+	dd if=/dev/zero of=a9rootfs.ext3 bs=1M count=32
+	mkfs.ext3 a9rootfs.ext3
+
+	sudo mkdir tmpfs
+	sudo mount -t ext3 a9rootfs.ext3 tmpfs/ -o loop
+	sudo cp -r rootfs/*  tmpfs/
+	sudo umount tmpfs
+
+Launch QEMU, 
+
+	qemu-system-arm -M vexpress-a9 -m 512M -kernel /home/baohua/develop/linux/arch/arm/boot/zImage -nographic -append "root=/dev/mmcblk0 console=ttyAMA0" -sd a9rootfs.ext3
+
+PS. Correct the folder path if needed, tried it on another PC.
+
+
+
+## QEMU in -nographic mode
+
+To see the help use <Ctrl-a h> or <Ctrl-a ?> :
+
+	(qemu) 
+	C-a h    print this help
+	C-a x    exit emulator
+	C-a s    save disk data back to file (if -snapshot)
+	C-a t    toggle console timestamps
+	C-a b    send break (magic sysrq)
+	C-a c    switch between console and monitor
+	C-a C-a  sends C-a
+
+
 这里简单介绍下qemu命令的参数：
 
 	-M vexpress-a9 模拟vexpress-a9单板，你可以使用-M ?参数来获取该qemu版本支持的所有单板
@@ -288,76 +370,27 @@ Succeed,
 
 	-append "console=ttyAMA0" 内核启动参数，这里告诉内核vexpress单板运行，串口设备是哪个tty。
 
-Kernel launched, but error [Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)](/execution_result/qemu-system-arm--output.txt) occurred which means lack of rootfs.
-
-	VFS: Cannot open root device "(null)" or unknown-block(0,0): error -6
-	Please append a correct "root=" boot option; here are the available partitions:
-	1f00          131072 mtdblock0  (driver?)
-	Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+Run `qemu-system-arm -h` for more info.
 
 
-## Creating rootfs
 
-本文制本的根文件系统 = busybox(包含基础的Linux命令)  + 运行库 + 几个字符设备
+## Problems
 
-本文直接使用SD卡做为存储空间，文件格式为ext3格式
-
-
-下载、编译和安装busybox
-
-	wget http://www.busybox.net/downloads/busybox-1.20.2.tar.bz2
-
-		Or download from `http://linux.linuxidc.com/index.php?folder=cHViL0J1c3lib3g=` in China :).
-
-	make defconfig
-
-	make CROSS_COMPILE=arm-linux-gnueabi-
-
-	make install CROSS_COMPILE=arm-linux-gnueabi-
-
-
-安装完成后，会在busybox目录下生成_install目录，该目录下的程序就是单板运行所需要的命令。
-
+### 1
 
 An error occurred while executing `make CROSS_COMPILE=arm-linux-gnueabi-` [error: storage size of ‘rlimit_fsize’ isn’t known](/execution_result/busybox-make-output-error.txt). Fix it with updating `include/platform.h` and add `#include <sys/resource.h>`
 
 Refer to [error: storage size of ‘rlimit_fsize’ isn’t known](http://blog.csdn.net/remme123/article/details/9136783)
 
 
-
-
---------Ongoing-----------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Launch again...
-
-        qemu-system-arm -M vexpress-a9 -m 512M -kernel /home/peter/work/src/linux/linux/arch/arm/boot/zImage -nographic -append "root=/dev/mmcblk0 console=ttyAMA0" -sd a9rootfs.ext3
-
-
-
-
-
-
-
 # Reference
+
+[从零使用qemu模拟器搭建arm运行环境](http://blog.csdn.net/linyt/article/details/42504975)
 
 [QEMU实验平台](http://book.2cto.com/201508/55133.html)
 
 [Booting Linux with U-Boot on QEMU ARM](https://balau82.wordpress.com/2010/04/12/booting-linux-with-u-boot-on-qemu-arm/#trackback-2970)
 
-[从零使用qemu模拟器搭建arm运行环境](http://blog.csdn.net/linyt/article/details/42504975)
 
 
 

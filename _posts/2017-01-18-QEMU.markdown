@@ -392,5 +392,10 @@ Refer to [error: storage size of ‘rlimit_fsize’ isn’t known](http://blog.c
 [Booting Linux with U-Boot on QEMU ARM](https://balau82.wordpress.com/2010/04/12/booting-linux-with-u-boot-on-qemu-arm/#trackback-2970)
 
 
+[Ubuntu 16.04 利用qemu模拟ARM开发板](http://blog.csdn.net/nxcxl88/article/details/53244754)
+
+[ARM Versatile Express Emulation On Qemu From Scratch](https://learningfromyoublog.wordpress.com/2016/04/05/131/)
+
+[]()
 
 

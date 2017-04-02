@@ -16,6 +16,9 @@ categories: jekyll update
 
 	sudo apt-get install gcc-arm-linux-gnueabi
 
+
+
+
 ## Compile kernel
 
 ### Generate .config file specific to vexpress board,
@@ -38,6 +41,9 @@ Generated `.config` as below,
 	-rwxrwxr-x  1 peter peter 3325088  3月 19 16:36 zImage*
 	-rw-rw-r--  1 peter peter     134  3月 19 16:36 .zImage.cmd
 
+
+
+
 ## Download and intall QEMU
 
 
@@ -56,220 +62,29 @@ Generated `.config` as below,
 
 	./configure --target-list=arm-softmmu --audio-drv-list=
 
-
-For example,
-
-	peter@peter-ThinkPad-T430:~/work/src/qemu-2.0.2$ ./configure --target-list=arm-softmmu --audio-drv-list=
-	Disabling libtool due to broken toolchain support
-	Install prefix    /usr/local
-	BIOS directory    /usr/local/share/qemu
-	binary directory  /usr/local/bin
-	library directory /usr/local/lib
-	module directory  /usr/local/lib/qemu
-	libexec directory /usr/local/libexec
-	include directory /usr/local/include
-	config directory  /usr/local/etc
-	local state directory   /usr/local/var
-	Manual directory  /usr/local/share/man
-	ELF interp prefix /usr/gnemul/qemu-%M
-	Source path       /home/peter/work/src/qemu-2.0.2
-	C compiler        cc
-	Host C compiler   cc
-	C++ compiler      c++
-	Objective-C compiler cc
-	ARFLAGS           rv
-	CFLAGS            -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -pthread -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include   -g 
-	QEMU_CFLAGS       -fPIE -DPIE -m64 -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -Wstrict-prototypes -Wredundant-decls -Wall -Wundef -Wwrite-strings -Wmissing-prototypes -fno-strict-aliasing -fno-common  -Wendif-labels -Wmissing-include-dirs -Wempty-body -Wnested-externs -Wformat-security -Wformat-y2k -Winit-self -Wignored-qualifiers -Wold-style-declaration -Wold-style-definition -Wtype-limits -fstack-protector-all -I/usr/include/libpng12   -I$(SRC_PATH)/pixman/pixman -I$(BUILD_DIR)/pixman/pixman -I$(SRC_PATH)/dtc/libfdt
-	LDFLAGS           -Wl,--warn-common -Wl,-z,relro -Wl,-z,now -pie -m64 -g 
-	make              make
-	install           install
-	python            python -B
-	smbd              /usr/sbin/smbd
-	module support    no
-	host CPU          x86_64
-	host big endian   no
-	target list       arm-softmmu
-	tcg debug enabled no
-	gprof enabled     no
-	sparse enabled    no
-	strip binaries    yes
-	profiler          no
-	static build      no
-	-Werror enabled   no
-	pixman            internal
-	SDL support       yes
-	GTK support       no
-	VTE support       no
-	curses support    yes
-	curl support      no
-	mingw32 support   no
-	Audio drivers     
-	Block whitelist (rw) 
-	Block whitelist (ro) 
-	VirtFS support    no
-	VNC support       yes
-	VNC TLS support   no
-	VNC SASL support  no
-	VNC JPEG support  no
-	VNC PNG support   yes
-	VNC WS support    no
-	xen support       no
-	brlapi support    no
-	bluez  support    no
-	Documentation     yes
-	GUEST_BASE        yes
-	PIE               yes
-	vde support       no
-	netmap support    no
-	Linux AIO support no
-	ATTR/XATTR support yes
-	Install blobs     yes
-	KVM support       yes
-	RDMA support      no
-	TCG interpreter   no
-	fdt support       yes
-	preadv support    yes
-	fdatasync         yes
-	madvise           yes
-	posix_madvise     yes
-	sigev_thread_id   yes
-	uuid support      no
-	libcap-ng support no
-	vhost-net support yes
-	vhost-scsi support yes
-	Trace backend     nop
-	Trace output file trace-<pid>
-	spice support     no
-	rbd support       no
-	xfsctl support    no
-	nss used          no
-	libusb            no
-	usb net redir     no
-	GLX support       yes
-	libiscsi support  no
-	libnfs support    no
-	build guest agent yes
-	QGA VSS support   no
-	seccomp support   no
-	coroutine backend ucontext
-	coroutine pool    yes
-	GlusterFS support no
-	virtio-blk-data-plane no
-	gcov              gcov
-	gcov enabled      no
-	TPM support       no
-	libssh2 support   no
-	TPM passthrough   no
-	QOM debugging     yes
-	vhdx              no
-	Quorum            no
-	lzo support       no
-	snappy support    no
-
+[execution result](/execution_result/qemu/configure-qemu-to-support-all-boards-under-arm.txt)
 
 ### Compile 
 
 	make
 
-Output, 
-
-	LINK  arm-softmmu/qemu-system-arm
-	AS    optionrom/multiboot.o
-	Building optionrom/multiboot.img
-	Building optionrom/multiboot.raw
-	Signing optionrom/multiboot.bin
-	AS    optionrom/linuxboot.o
-	Building optionrom/linuxboot.img
-	Building optionrom/linuxboot.raw
-	Signing optionrom/linuxboot.bin
-	AS    optionrom/kvmvapic.o
-	Building optionrom/kvmvapic.img
-	Building optionrom/kvmvapic.raw
-	Signing optionrom/kvmvapic.bin
-
-
-If below problem occurred,
-
-	configure.ac:75: error: possibly undefined macro: AC_PROG_LIBTOOL
-	If this token and others are legitimate, please use m4_pattern_allow.
-	See the Autoconf documentation.
-
-fix it with below, 
-
-	sudo apt-get install libtool  
-
-[error: possibly undefined macro: AC_PROG_LIBTOOL](http://blog.csdn.net/yusiguyuan/article/details/31747859)
+[Output](/execution_result/qemu/compile-qemu.txt)
 
 
 
-
-### Install
+### Install QEMU
 
 	make install
 
-If below problem occur, 
-
-	peter@peter-ThinkPad-T430:~/work/src/qemu-2.0.2$ make install
-	make  all-recursive
-	Making all in pixman
-	make  all-am
-	make[4]: Nothing to be done for `all-am'.
-	Making all in test
-	make[3]: Nothing to be done for `all'.
-		 LEX convert-dtsv0-lexer.lex.c
-	make[1]: flex: Command not found
-		 BISON dtc-parser.tab.c
-	make[1]: bison: Command not found
-		 LEX dtc-lexer.lex.c
-	make[1]: flex: Command not found
-		CHK version_gen.h
-	install -d -m 0755 "/usr/local/share/doc/qemu"
-	install: cannot change permissions of ‘/usr/local/share/doc/qemu’: No such file or directory
-	make: *** [install-doc] Error 1
-
-fix it with 
-
-	sudo make install
-
-[LEX convert-dtsv0-lexer.lex.c](http://blog.csdn.net/cfbingo/article/details/50145233)
+[Output](/execution_result/qemu/install-qemu.txt)
 
 
-Succeed,
 
-	install -d -m 0755 "/usr/local/share/doc/qemu"
-	install -c -m 0644 qemu-doc.html  qemu-tech.html "/usr/local/share/doc/qemu"
-	install -c -m 0644 qmp-commands.txt "/usr/local/share/doc/qemu"
-	install -d -m 0755 "/usr/local/share/man/man1"
-	install -c -m 0644 qemu.1 "/usr/local/share/man/man1"
-	install -c -m 0644 qemu-img.1 "/usr/local/share/man/man1"
-	install -d -m 0755 "/usr/local/share/man/man8"
-	install -c -m 0644 qemu-nbd.8 "/usr/local/share/man/man8"
-	install -d -m 0755 "/usr/local/share/qemu"
-	install -d -m 0755 "/usr/local/etc/qemu"
-	install -c -m 0644 /home/peter/work/src/qemu-2.0.2/sysconfigs/target/target-x86_64.conf "/usr/local/etc/qemu"
-	install -d -m 0755 "/usr/local/var"/run
-	install -d -m 0755 "/usr/local/bin"
-	install -c -m 0755  qemu-ga qemu-nbd qemu-img qemu-io  "/usr/local/bin"
-	install -d -m 0755 "/usr/local/libexec"
-	install -c -m 0755  qemu-bridge-helper "/usr/local/libexec"
-	set -e; for x in bios.bin bios-256k.bin sgabios.bin vgabios.bin vgabios-cirrus.bin vgabios-stdvga.bin vgabios-vmware.bin vgabios-qxl.bin acpi-dsdt.aml q35-acpi-dsdt.aml ppc_rom.bin openbios-sparc32 openbios-sparc64 openbios-ppc QEMU,tcx.bin QEMU,cgthree.bin pxe-e1000.rom pxe-eepro100.rom pxe-ne2k_pci.rom pxe-pcnet.rom pxe-rtl8139.rom pxe-virtio.rom efi-e1000.rom efi-eepro100.rom efi-ne2k_pci.rom efi-pcnet.rom efi-rtl8139.rom efi-virtio.rom qemu-icon.bmp qemu_logo_no_text.svg bamboo.dtb petalogix-s3adsp1800.dtb petalogix-ml605.dtb multiboot.bin linuxboot.bin kvmvapic.bin s390-zipl.rom s390-ccw.img spapr-rtas.bin slof.bin palcode-clipper; do \
-			install -c -m 0644 /home/peter/work/src/qemu-2.0.2/pc-bios/$x "/usr/local/share/qemu"; \
-		done
-	install -d -m 0755 "/usr/local/share/qemu/keymaps"
-	set -e; for x in da     en-gb  et  fr     fr-ch  is  lt  modifiers  no  pt-br  sv ar      de     en-us  fi  fr-be  hr     it  lv  nl         pl  ru     th common  de-ch  es     fo  fr-ca  hu     ja  mk  nl-be      pt  sl     tr bepo    cz; do \
-			install -c -m 0644 /home/peter/work/src/qemu-2.0.2/pc-bios/keymaps/$x "/usr/local/share/qemu/keymaps"; \
-		done
-	for d in arm-softmmu; do \
-		make --no-print-directory BUILD_DIR=/home/peter/work/src/qemu-2.0.2 TARGET_DIR=$d/ -C $d install || exit 1 ; \
-		done
-	install -m 755 qemu-system-arm "/usr/local/bin"
-
-
-## Launch QEMU
+### Launch QEMU
 
 	qemu-system-arm -M vexpress-a9 -m 512M -kernel /home/peter/work/src/linux/linux/arch/arm/boot/zImage -nographic -append "console=ttyAMA0"
 
-Kernel launched, but error [Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)](/execution_result/qemu-system-arm--output.txt) occurred which means lack of rootfs.
+Kernel launched, but error [Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)](/execution_result/qemu/qemu-system-arm--output.txt) occurred which means lack of rootfs.
 
 	VFS: Cannot open root device "(null)" or unknown-block(0,0): error -6
 	Please append a correct "root=" boot option; here are the available partitions:
@@ -277,13 +92,9 @@ Kernel launched, but error [Kernel panic - not syncing: VFS: Unable to mount roo
 	Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
 
 
+## rootfs
 
-
------------------------------------------ ready to remove begin
-
-## Creating rootfs
-
-本文制本的根文件系统 = busybox(包含基础的Linux命令)  + 运行库 + 几个字符设备
+根文件系统 = busybox(包含基础的Linux命令)  + 运行库 + 几个字符设备
 
 本文直接使用SD卡做为存储空间，文件格式为ext3格式
 
@@ -294,15 +105,7 @@ Download busybox,
 
 		Or download from `http://linux.linuxidc.com/index.php?folder=cHViL0J1c3lib3g=` in China :).
 
-
-
-
-
-
------------------------------------------ ready to remove end
-
-
-## rootfs
+### create rootfs
 
 Generate `_install` as below,
 
@@ -338,9 +141,11 @@ Create image as below,
 
 Launch QEMU, 
 
-	qemu-system-arm -M vexpress-a9 -m 512M -kernel /home/baohua/develop/linux/arch/arm/boot/zImage -nographic -append "root=/dev/mmcblk0 console=ttyAMA0" -sd a9rootfs.ext3
+	qemu-system-arm -M vexpress-a9 -m 512M -kernel /home/peter/work/src/linux/linux/arch/arm/boot/zImage -nographic -append "root=/dev/mmcblk0 console=ttyAMA0" -sd a9rootfs.ext3 
 
-PS. Correct the folder path if needed, tried it on another PC.
+
+[execution log for creating rootfs](/execution_result/qemu/busybox-create-rootfs.txt)
+
 
 
 
@@ -374,13 +179,72 @@ Run `qemu-system-arm -h` for more info.
 
 
 
+
 ## Problems
 
-### 1
+### error: storage size of ‘rlimit_fsize’ isn’t known
 
-An error occurred while executing `make CROSS_COMPILE=arm-linux-gnueabi-` [error: storage size of ‘rlimit_fsize’ isn’t known](/execution_result/busybox-make-output-error.txt). Fix it with updating `include/platform.h` and add `#include <sys/resource.h>`
+An error occurred while executing `make CROSS_COMPILE=arm-linux-gnueabi-` [error: storage size of ‘rlimit_fsize’ isn’t known](/execution_result/qemu/busybox-make-output-error.txt). Fix it with updating `include/platform.h` and add `#include <sys/resource.h>`
 
 Refer to [error: storage size of ‘rlimit_fsize’ isn’t known](http://blog.csdn.net/remme123/article/details/9136783)
+
+### error: possibly undefined macro: AC_PROG_LIBTOOL
+
+While compiling QEMU if below problem occurred,
+
+	configure.ac:75: error: possibly undefined macro: AC_PROG_LIBTOOL
+	If this token and others are legitimate, please use m4_pattern_allow.
+	See the Autoconf documentation.
+
+fix it with below, 
+
+	sudo apt-get install libtool  
+
+[error: possibly undefined macro: AC_PROG_LIBTOOL](http://blog.csdn.net/yusiguyuan/article/details/31747859)
+
+
+### install: cannot change permissions of ‘/usr/local/share/doc/qemu’: No such file or directory
+
+If below problem occurred while installing QEMU, 
+
+	peter@peter-ThinkPad-T430:~/work/src/qemu-2.0.2$ make install
+	make  all-recursive
+	Making all in pixman
+	make  all-am
+	make[4]: Nothing to be done for `all-am'.
+	Making all in test
+	make[3]: Nothing to be done for `all'.
+		 LEX convert-dtsv0-lexer.lex.c
+	make[1]: flex: Command not found
+		 BISON dtc-parser.tab.c
+	make[1]: bison: Command not found
+		 LEX dtc-lexer.lex.c
+	make[1]: flex: Command not found
+		CHK version_gen.h
+	install -d -m 0755 "/usr/local/share/doc/qemu"
+	install: cannot change permissions of ‘/usr/local/share/doc/qemu’: No such file or directory
+	make: *** [install-doc] Error 1
+
+fix it with 
+
+	sudo make install
+
+[LEX convert-dtsv0-lexer.lex.c](http://blog.csdn.net/cfbingo/article/details/50145233)
+
+
+### can't run '/etc/init.d/rcS': No such file or directory
+
+EXT3-fs (mmcblk0): mounted filesystem with writeback data mode
+VFS: Mounted root (ext3 filesystem) readonly on device 179:0.
+Freeing unused kernel memory: 244K (805c0000 - 805fd000)
+random: nonblocking pool is initialized
+can't run '/etc/init.d/rcS': No such file or directory
+
+Please press Enter to activate this console.  
+
+???????????????????????????????????????????????????????????????????????????
+
+
 
 
 # Reference
@@ -391,11 +255,9 @@ Refer to [error: storage size of ‘rlimit_fsize’ isn’t known](http://blog.c
 
 [Booting Linux with U-Boot on QEMU ARM](https://balau82.wordpress.com/2010/04/12/booting-linux-with-u-boot-on-qemu-arm/#trackback-2970)
 
-
 [Ubuntu 16.04 利用qemu模拟ARM开发板](http://blog.csdn.net/nxcxl88/article/details/53244754)
 
 [ARM Versatile Express Emulation On Qemu From Scratch](https://learningfromyoublog.wordpress.com/2016/04/05/131/)
 
-[]()
 
 

@@ -298,6 +298,19 @@ FILE: ./include/linux/gfp.h
 
 
 
+### inode
+
+[The “inode” is sometimes referred to as an index node. But what is it? Basically, it is a file structure on a file system. More easily, it is a “database” of all file information except the file contents and the file name.](http://www.linux.org/threads/intro-to-inodes.4130/)
+
+	ls –i test
+	stat –i test
+	tree -a -L 1 --inodes /
+
+
+`struct inode` defined in  `./include/linux/fs.h`
+
+[The inode struct](http://www.makelinux.net/books/lkd2/ch12lev1sec6)
+
 
 ### Reference
 

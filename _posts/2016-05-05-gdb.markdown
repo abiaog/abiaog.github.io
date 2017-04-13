@@ -297,7 +297,98 @@ GNU DDD is a graphical front-end for command-line debuggers such as GDB, DBX, WD
 # Debugging with GDB in VIM
 
 
+
+
+# Debug Memory Layout And The Stack
+
+
+* Memory Layout
+
+That's how VM works. For the most part, each process's VM space is laid out in a similar and predictable manner:
+
+              +-------------------------------------------------------------------------------------------------------------------------+
+              | High Address        |            Args and env vars            | Command line arguments and environment variables        |
+              |---------------------+-----------------------------------------+---------------------------------------------------------|
+              |                     |                  Stack                  |                                                         |
+              |                     |                    |                    |                                                         |
+              |                     |                    V                    |                                                         |
+              |---------------------+-----------------------------------------+---------------------------------------------------------|
+              |                     |              Unused memory              |                                                         |
+              |---------------------+-----------------------------------------+---------------------------------------------------------|
+              |                     |                    ^                    |                                                         |
+              |                     |                    |                    |                                                         |
+              |                     |                  Heap                   |                                                         |
+              |---------------------+-----------------------------------------+---------------------------------------------------------|
+              |                     |    Uninitialized Data Segment (bss)     | Initialized to zero by exec.                            |
+              |---------------------+-----------------------------------------+---------------------------------------------------------|
+              |                     |        Initialized Data Segment         | Read from the program file by exec.                     |
+              |---------------------+-----------------------------------------+---------------------------------------------------------|
+              | Low Address         |              Text Segment               | Read from the program file by exec.                     |
+              +-------------------------------------------------------------------------------------------------------------------------+
+
+     * Text Segment: The text segment contains the actual code to be executed. It's usually sharable, so multiple instances of a program can share the text segment to lower memory requirements. This segment is usually marked read-only so a program can't modify its own instructions.
+     * Initialized Data Segment: This segment contains global variables which are initialized by the programmer.
+     * Uninitialized Data Segment: Also named "bss" (block started by symbol) which was an operator used by an old assembler. This segment contains uninitialized global variables. All variables in this segment are initialized to 0 or NULL pointers before the program begins to execute.
+     * The stack: The stack is a collection of stack frames which will be described in the next section. When a new frame needs to be added (as a result of a newly called function), the stack grows downward.
+     * The heap: Most dynamic memory, whether requested via C's malloc() and friends or C++'s new is doled out to the program from the heap. The C library also gets dynamic memory for its own personal workspace from the heap as well. As more memory is requested "on the fly", the heap grows upward.
+
+
+
+[gdb-memory-layout.c](/code_for_post/gdb/gdb-memory-layout.c)
+
+Execute, 
+
+	root@baohua-VirtualBox:~/w/src/abiaog.github.io/code_for_post/gdb# gcc -W -Wall -c gdb-memory-layout.c 
+	root@baohua-VirtualBox:~/w/src/abiaog.github.io/code_for_post/gdb# gcc -o gdb-memory-layout gdb-memory-layout.o
+	root@baohua-VirtualBox:~/w/src/abiaog.github.io/code_for_post/gdb# size gdb-memory-layout gdb-memory-layout.o
+	   text	   data	    bss	    dec	    hex	filename
+	   1108	    280	      4	   1392	    570	gdb-memory-layout
+	     96	      0	      0	     96	     60	gdb-memory-layout.o
+
+
+The data segment is the initialized and uninitialized segments combined. The dec and hex sections are the file size in decimal and hexadecimal format respectively.
+
+You can also get the size of the sections of the object file using "objdump -h" or "objdump -x".
+
+
+	root@baohua-VirtualBox:~/w/src/abiaog.github.io/code_for_post/gdb# objdump -h gdb-memory-layout.o
+
+	gdb-memory-layout.o:     file format elf32-i386
+
+	Sections:
+	Idx Name          Size      VMA       LMA       File off  Algn
+	  0 .text         0000001c  00000000  00000000  00000034  2**0
+			  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+	  1 .data         00000000  00000000  00000000  00000050  2**0
+			  CONTENTS, ALLOC, LOAD, DATA
+	  2 .bss          00000000  00000000  00000000  00000050  2**0
+			  ALLOC
+	  3 .rodata       0000000c  00000000  00000000  00000050  2**0
+			  CONTENTS, ALLOC, LOAD, READONLY, DATA
+	  4 .comment      00000025  00000000  00000000  0000005c  2**0
+			  CONTENTS, READONLY
+	  5 .note.GNU-stack 00000000  00000000  00000000  00000081  2**0
+			  CONTENTS, READONLY
+	  6 .eh_frame     00000038  00000000  00000000  00000084  2**2
+			  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+
+
+
+
+
+## Preparerring An Executable For Debugging
+
+	gcc -g -o filename filename.c
+
+You can also give a numerical argument to -g, -ggdb and all the other debugging format options, with 1 being the least amount of information and 3 being the most. Without a numerical argument, the debug level defaults to 2. By using -g3 you can even access preprocessor macros, which is really nice. I suggest you always use -ggdb3 to produce an enhanced symbol table.
+
+
+[Using GNU's GDB Debugger Memory Layout And The Stack](http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php)
+
+
 # Reference
+
+
 [使用gdb和core dump迅速定位段错误](http://my.oschina.net/michaelyuanyuan/blog/68618)
 
 [gdb的gui用法](http://www.cnblogs.com/xuxm2007/archive/2011/08/13/2137055.html)
@@ -309,5 +400,7 @@ GNU DDD is a graphical front-end for command-line debuggers such as GDB, DBX, WD
 [Debugging with gdb](https://sourceware.org/gdb/current/onlinedocs/gdb/)
 
 [Debugging Under Unix: gdb Tutorial](https://www.cs.cmu.edu/~gilpin/tutorial/)
+
+
 
 

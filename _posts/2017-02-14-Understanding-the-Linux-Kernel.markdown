@@ -296,6 +296,38 @@ FILE: ./include/linux/gfp.h
 	void *page_address(const struct page *page);
 
 
+#### bootmem
+
+
+	setup_arch(char **cmdline_p)
+		paging_init(mdesc);
+			bootmem_init();
+
+
+	typedef struct bootmem_data {
+		unsigned long node_min_pfn;
+		unsigned long node_low_pfn;
+		void *node_bootmem_map;
+		unsigned long last_end_off;
+		unsigned long hint_idx;
+		struct list_head list;
+	} bootmem_data_t;
+
+
+
+#### buddy system
+
+
+
+[linux内存模型之buddy(伙伴)系统一概览及相关数据结构](http://blog.csdn.net/gdt_a20/article/details/7327183)
+
+
+#### slab
+
+
+[What is slab?](http://blog.csdn.net/ganggexiongqi/article/details/8921643)
+
+
 
 
 ### inode

@@ -145,11 +145,11 @@ Install and Test TFTP Server in Host Ubuntu machine:
 
 The lines of interest in this file are server_args, which indicates the directory where TFTP stores and looks for files. The kernel that is downloaded to the board needs to be placed in this directory.
 
-## Create a folder /tftpboot this should match whatever you gave in server_args. mostly it will be tftpboot
+## Create a folder /srv/tftpboot this should match whatever you gave in server_args. mostly it will be tftpboot
 
-	sudo mkdir /tftpboot
-	sudo chmod -R 777 /tftpboot
-	sudo chown -R nobody /tftpboot
+	sudo mkdir /srv/tftpboot
+	sudo chmod -R 777 /srv/tftpboot
+	sudo chown -R nobody /srv/tftpboot
 
 ## Restart the xinetd service.
 
@@ -157,31 +157,59 @@ The lines of interest in this file are server_args, which indicates the director
 
 Now tftp server will be up and starts running.
 
-## Create a file named test with some content in /tftpboot path of the tftp server
+## Create a file named test with some content in /srv/tftpboot path of the tftp server
 
-	touch /tftpboot/test
-	sudo chmod -R 777 /tftpboot
+	touch /srv/tftpboot/test
+	sudo chmod -R 777 /srv/tftpboot/test
 
 Obtain the ip address of the tftp server using: ifconfig command. example we will consider the ip address as 192.168.1.2
 
 ## Now in some other terminal and folder  follow the following steps.
 
-	 $ tftp 192.168.1.2
-	 tftp> get test
-	 Sent 159 bytes in 0.0 seconds
-	 tftp> quit
-	 $ ls test
+	peter@peter-ThinkPad-T430:~/work/src/abiaog.github.io/_posts$ tftp 192.168.1.106
+	tftp> get test
+	tftp> quit
+	peter@peter-ThinkPad-T430:~/work/src/abiaog.github.io/_posts$ ll test 
+	-rw-r--r-- 1 peter peter 0  4月 30 20:52 test
+
 
 You can try the same test on another computer on the network, to ensure that you can connect to the host from another machine (across the  wire, as a network-person would say). If TFTP works from localhost but not from another computer, chances are the firewall is still running. Stop this service, and try again.
 
 
-# 
+# Problems
 
+## when `get test` with tftp, error code 2 access violation
+
+check info in /var/log/syslog as below,
+
+Apr 30 20:44:22 peter-ThinkPad-T430 in.tftpd[8769]: connect from 192.168.1.106 (192.168.1.106)
+Apr 30 20:44:22 peter-ThinkPad-T430 tftpd[8770]: tftpd: trying to get file: test
+Apr 30 20:44:22 peter-ThinkPad-T430 tftpd[8770]: tftpd: serving file from /srv/tftp
+
+Refer to [tftp error code 2 access violation](https://askubuntu.com/questions/599558/tftp-error-code-2-access-violation-tftp-not-working)
 
 
 # Reference
 
 [u-boot-arm-versatile-express-emulation-on-qemu-with-nfs-as-rootfs](https://learningfromyoublog.wordpress.com/2016/11/27/u-boot-arm-versatile-express-emulation-on-qemu-with-nfs-as-rootfs/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # note

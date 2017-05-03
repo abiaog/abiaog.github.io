@@ -1,0 +1,21 @@
+---
+layout: post
+title:  "FreeRTOS"
+date:   2017-05-03 
+categories: jekyll update
+---
+
+# Definition: FreeRTOS Port
+
+FreeRTOS can be built with approximately twenty different compilers, and can run on more
+than thirty different processor architectures. Each supported combination of compiler and
+processor is considered to be a separate FreeRTOS port.
+
+
+
+
+
+# Reference
+
+
+

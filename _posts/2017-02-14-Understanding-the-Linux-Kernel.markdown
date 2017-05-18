@@ -344,6 +344,20 @@ FILE: ./include/linux/gfp.h
 [The inode struct](http://www.makelinux.net/books/lkd2/ch12lev1sec6)
 
 
+
+
+
+
+[What does the Virtual kernel Memory Layout in dmesg imply?](https://unix.stackexchange.com/questions/5124/what-does-the-virtual-kernel-memory-layout-in-dmesg-imply)
+
+[Turning on an ARM MMU and Living to tell the Tale: Some Theory](http://www.embedded-bits.co.uk/2011/mmutheory/)
+[Turning on an ARM MMU and Living to tell the tale: The code](https://www.embedded-bits.co.uk/2011/mmucode/)
+
+
+
+
+
+
 ### Reference
 
 [Why is page size 4 kb in most operating systems?](https://www.quora.com/Why-is-page-size-4-kb-in-most-operating-systems)

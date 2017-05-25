@@ -50,6 +50,7 @@ Generated `.config` as below,
 ### Download QEMU
 
 	wget http://wiki.qemu-project.org/download/qemu-2.0.2.tar.bz2
+	tar -jxvf qemu-2.0.2.tar.bz2
 
 ### Install prerequisites
 
@@ -177,6 +178,28 @@ To see the help use <Ctrl-a h> or <Ctrl-a ?> :
 
 Run `qemu-system-arm -h` for more info.
 
+
+
+## How to use gdb to debug ARM kernel in Qemu
+
+In terminal 1:
+
+	# gdb-multiarch -x .gdbinit vmlinux
+
+In terminal 2:
+
+	qemu-2.0.2# qemu-system-arm -M vexpress-a9 -m 512M -kernel /home/baohua/develop/linux/arch/arm/boot/zImage   -nographic -append "console=ttyAMA0" -s -S
+
+	-S              freeze CPU at startup (use 'c' to start execution)
+	-s              shorthand for -gdb tcp::1234
+
+
+[execution_result](/execution_result/qemu/gdb-qemu-kernel.txt)
+
+
+[How to use gdb to debug ARM kernel in Qemu](http://zhiyisun.github.io/2015/04/22/how-to-use-gdb-to-debug-ARM-kernel-in-Qemu.html)
+
+[利用qemu进行内核源码级调试](http://blog.csdn.net/gdt_a20/article/details/7231652)
 
 
 

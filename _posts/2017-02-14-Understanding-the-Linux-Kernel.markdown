@@ -345,18 +345,92 @@ FILE: ./include/linux/gfp.h
 
 
 
+### MMU
+
+[Turning on an ARM MMU and Living to tell the Tale: Some Theory](http://www.embedded-bits.co.uk/2011/mmutheory/)
+
+[Turning on an ARM MMU and Living to tell the tale: The code](https://www.embedded-bits.co.uk/2011/mmucode/)
+
+[Introduction to Memory Management in Linux by Alan Ott](https://www.youtube.com/watch?v=EWwfMM2AW9g&t=193s)
 
 
+### What does the Virtual kernel Memory Layout in dmesg imply?
+
+For example, below output,
+
+	Memory: 2047804k/2086248k available (3179k kernel code, 37232k reserved, 1935k data, 436k init, 1176944k highmem)
+	virtual kernel memory layout:
+	    fixmap  : 0xffc57000 - 0xfffff000   (3744 kB)
+	    pkmap   : 0xff800000 - 0xffa00000   (2048 kB)
+	    vmalloc : 0xf7ffe000 - 0xff7fe000   ( 120 MB)
+	    lowmem  : 0xc0000000 - 0xf77fe000   ( 887 MB)
+	      .init : 0xc0906000 - 0xc0973000   ( 436 kB)
+	      .data : 0xc071ae6a - 0xc08feb78   (1935 kB)
+	      .text : 0xc0400000 - 0xc071ae6a   (3179 kB)
+
+User space (high memory) can be accessed by the user and, if necessary, also by the kernel.
+
+Kernel space (low memory) can only be accessed by the kernel.
+
+Like this, 
+
+	0x00000000             0xc0000000  0xffffffff 
+	    |                        |          |
+	    +------------------------+----------+
+	    |  User                  |  Kernel  |
+	    |  space                 |  space   |
+	    +------------------------+----------+
+
+
+
+* Physical memory: 2GB RAM
+
+First, the .text, .data and .init sequences which provide the initialization of the kernel's own page tables (translate linear into physical addresses).
+
+* .text : 0xc0400000 - 0xc071ae6a   (3179 kB)
+The range where the kernel code resides.
+
+* .data : 0xc071ae6a - 0xc08feb78   (1935 kB)
+The range where the kernel data segments reside.
+
+* .init : 0xc0906000 - 0xc0973000   ( 436 kB)
+The range where the kernel's initial page tables reside.
+
+
+
+Second, the usage of kernel space after initialization
+
+* lowmem  : 0xc0000000 - 0xf77fe000   ( 887 MB)
+The lowmem range can be used by the kernel to directly access physical addresses.
+This is not the full 1 GB, because the kernel always requires at least 128 MB of linear addresses to implement noncontiguous memory allocation and fix-mapped linear addresses.
+
+* vmalloc : 0xf7ffe000 - 0xff7fe000   ( 120 MB)
+Virtual memory allocation can allocate page frames based on a noncontiguous scheme. The main advantage of this schema is to avoid external fragmentation, this is used for swap areas, kernel modules or allocation of buffers to some I/O devices.
+
+* pkmap   : 0xff800000 - 0xffa00000   (2048 kB)
+The permanent kernel mapping allows the kernel to establish long-lasting mappings of high-memory page frames into the kernel address space. When a HIGHMEM page is mapped using kmap(), virtual addresses are assigned from here.
+
+* fixmap  : 0xffc57000 - 0xfffff000   (3744 kB)
+These are fix-mapped linear addresses which can refer to any physical address in the RAM, not just the last 1 GB like the lowmem addresses. Fix-mapped linear addresses are a bit more efficient than their lowmem and pkmap colleagues. There are dedicated page table descriptors assigned for fixed mapping, and mappings of HIGHMEM pages using kmap_atomic are allocated from here.
+
+
+
+
+Call tree, 
+
+	start_kernel(void)
+		mm_init(void)
+			mem_init(void)
 
 [What does the Virtual kernel Memory Layout in dmesg imply?](https://unix.stackexchange.com/questions/5124/what-does-the-virtual-kernel-memory-layout-in-dmesg-imply)
 
-[Turning on an ARM MMU and Living to tell the Tale: Some Theory](http://www.embedded-bits.co.uk/2011/mmutheory/)
-[Turning on an ARM MMU and Living to tell the tale: The code](https://www.embedded-bits.co.uk/2011/mmucode/)
+
+#### TLB(Translation lookaside buffer)
+
+A Translation lookaside buffer (TLB) is a memory cache that is used to reduce the time taken to access a user memory location. It is a part of the chip’s memory-management unit (MMU). The TLB stores the recent translations of virtual memory to physical memory and can be called an address-translation cache. A TLB may reside between the CPU and the CPU cache, between CPU cache and the main memory or between the different levels of the multi-level cache. The majority of desktop, laptop, and server processors include one or more TLBs in the memory management hardware, and it is nearly always present in any processor that utilizes paged or segmented virtual memory.
 
 
-
-
-
+[Translation lookaside buffer](https://en.wikipedia.org/wiki/Translation_lookaside_buffer)
 
 ### Reference
 

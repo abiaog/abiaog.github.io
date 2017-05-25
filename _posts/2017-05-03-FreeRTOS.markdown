@@ -13,6 +13,120 @@ processor is considered to be a separate FreeRTOS port.
 
 
 
+# FreeRTOSConfig.h
+
+FreeRTOS is configured by a header file called FreeRTOSConfig.h.
+
+FreeRTOSConfig.h is used to tailor FreeRTOS for use in a specific application. For example, FreeRTOSConfig.h contains constants such as configUSE_PREEMPTION, the setting of which defines whether the co-operative or pre-emptive scheduling algorithm will be used . As FreeRTOSConfig.h contains application specific definitions, it should be located in a directory that is part of the application being built, not in a directory that contains the FreeRTOS source code.
+
+
+# The Top Directories in the FreeRTOS Distribution
+
+The first and second level directories of the FreeRTOS distribution are shown and described in Figure 1.
+
+FreeRTOS
+│ │
+│ ├─`Source` Directory containing the FreeRTOS source files
+│ │
+│ └─`Demo` Directory containing pre-configured and port specific FreeRTOS demo projects
+│
+FreeRTOS-Plus
+ │
+ ├─`Source` Directory containing source code for some FreeRTOS+ ecosystem components
+ │
+ └─`Demo` Directory containing demo projects for FreeRTOS+ ecosystem components
+
+Figure 1. Top level directories within the FreeRTOS distribution
+
+
+
+
+
+# FreeRTOS Source Files Common to All Ports
+
+FreeRTOS
+ │
+ └─Source
+ │
+ ├─tasks.c FreeRTOS source file - always required
+ ├─list.c FreeRTOS source file - always required
+ ├─queue.c FreeRTOS source file - nearly always required
+ ├─timers.c FreeRTOS source file - optional
+ ├─event_groups.c FreeRTOS source file - optional
+ └─croutine.c FreeRTOS source file - optional
+
+Figure 2. Core FreeRTOS source files within the FreeRTOS directory tree
+
+
+
+
+
+# FreeRTOS Source Files Specific to a Port
+
+Source files specific to a FreeRTOS port are contained within the `FreeRTOS/Source/portable` directory. The portable directory is arranged as a hierarchy, first by compiler, then by processor architecture. This is shown in Figure 3.  If you are running FreeRTOS on a processor with architecture ‘architecture’ using compiler ‘compiler’ then, in addition to the core FreeRTOS source files, you must also build the files located in `FreeRTOS/Source/portable/[compiler]/[architecture]` directory.
+
+
+
+
+
+# Demo Applications
+
+A note to Linux users: FreeRTOS is developed and tested on a Windows host. 
+
+
+
+
+# Interrupt
+
+## Cascade Mode
+
+When the system requires more than 32 interrupts, it is necessary to expand the AXI INTC
+core capability to handle more interrupt. This can be achieved by setting the parameters
+related to Cascade Mode in the core. For additional details, see Cascade Mode Interrupt in
+Chapter 3.
+
+
+[AXI INTC](https://www.xilinx.com/support/documentation/ip_documentation/axi_intc/v4_1/pg099-axi-intc.pdf)
+
+
+
+## Interrupt Vector Tables
+
+./mp0_bsp/microblaze_0/libsrc/intc_v3_5/src/xintc.h
+
+The interrupt vector table for each interrupt controller device is declared
+statically in xintc_g.c within the configuration data for each instance.
+The device ID of the interrupt controller device is used by the driver as a
+direct index into the configuration data table - to retrieve the vector table
+for an instance of the interrupt controller. The user should populate the
+vector table with handlers and callbacks at run-time using the XIntc_Connect()
+and XIntc_Disconnect() functions.
+
+Each vector table entry corresponds to a device that can generate an
+interrupt. Each entry contains an interrupt handler function and an argument
+to be passed to the handler when an interrupt occurs.  The tools default this
+argument to the base address of the interrupting device.  Note that the
+device driver interrupt handlers given in this file do not take a base
+address as an argument, but instead take a pointer to the driver instance.
+This means that although the table is created statically, the user must still
+use XIntc_Connect() when the interrupt handler takes an argument other than
+the base address. This is only to say that the existence of the static vector
+tables should not mislead the user into thinking they no longer need to
+register/connect interrupt handlers with this driver.
+
+
+
+
+
+# lwIP 
+
+
+
+
+[lwIP - A Lightweight TCP/IP stack](http://savannah.nongnu.org/projects/lwip/)
+
+
+[LightWeight IP Application Examples](https://www.xilinx.com/support/documentation/application_notes/xapp1026.pdf)
 
 
 # Reference

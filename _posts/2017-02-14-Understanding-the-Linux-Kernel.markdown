@@ -298,10 +298,10 @@ FILE: ./include/linux/gfp.h
 
 #### bootmem
 
-
-	setup_arch(char **cmdline_p)
-		paging_init(mdesc);
-			bootmem_init();
+	start_kernel(void)
+		setup_arch(char **cmdline_p)
+			paging_init(mdesc);
+				bootmem_init();
 
 
 	typedef struct bootmem_data {
@@ -313,6 +313,12 @@ FILE: ./include/linux/gfp.h
 		struct list_head list;
 	} bootmem_data_t;
 
+
+[linux内存模型之bootmem分配器<一>](http://blog.csdn.net/gdt_a20/article/details/7229329)
+
+[Boot Memory Allocator](https://www.kernel.org/doc/gorman/html/understand/understand022.html)
+
+[Understanding the Linux Virtual Memory Manager](https://www.kernel.org/doc/gorman/html/understand/)
 
 
 #### buddy system

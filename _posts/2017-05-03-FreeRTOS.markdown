@@ -24,17 +24,17 @@ FreeRTOSConfig.h is used to tailor FreeRTOS for use in a specific application. F
 
 The first and second level directories of the FreeRTOS distribution are shown and described in Figure 1.
 
-FreeRTOS
-│ │
-│ ├─`Source` Directory containing the FreeRTOS source files
-│ │
-│ └─`Demo` Directory containing pre-configured and port specific FreeRTOS demo projects
-│
-FreeRTOS-Plus
- │
- ├─`Source` Directory containing source code for some FreeRTOS+ ecosystem components
- │
- └─`Demo` Directory containing demo projects for FreeRTOS+ ecosystem components
+	FreeRTOS
+	│ │
+	│ ├─`Source` Directory containing the FreeRTOS source files
+	│ │
+	│ └─`Demo` Directory containing pre-configured and port specific FreeRTOS demo projects
+	│
+	FreeRTOS-Plus
+	 │
+	 ├─`Source` Directory containing source code for some FreeRTOS+ ecosystem components
+	 │
+	 └─`Demo` Directory containing demo projects for FreeRTOS+ ecosystem components
 
 Figure 1. Top level directories within the FreeRTOS distribution
 
@@ -44,16 +44,16 @@ Figure 1. Top level directories within the FreeRTOS distribution
 
 # FreeRTOS Source Files Common to All Ports
 
-FreeRTOS
- │
- └─Source
- │
- ├─tasks.c FreeRTOS source file - always required
- ├─list.c FreeRTOS source file - always required
- ├─queue.c FreeRTOS source file - nearly always required
- ├─timers.c FreeRTOS source file - optional
- ├─event_groups.c FreeRTOS source file - optional
- └─croutine.c FreeRTOS source file - optional
+	FreeRTOS
+	 │
+	 └─Source
+	 │
+	 ├─tasks.c FreeRTOS source file - always required
+	 ├─list.c FreeRTOS source file - always required
+	 ├─queue.c FreeRTOS source file - nearly always required
+	 ├─timers.c FreeRTOS source file - optional
+	 ├─event_groups.c FreeRTOS source file - optional
+	 └─croutine.c FreeRTOS source file - optional
 
 Figure 2. Core FreeRTOS source files within the FreeRTOS directory tree
 
@@ -86,6 +86,24 @@ related to Cascade Mode in the core. For additional details, see Cascade Mode In
 Chapter 3.
 
 
+
+For Cascade mode, Interrupt IDs are generated in xparameters.h
+as shown below:
+
+	    Master/Primary INTC
+		 ______
+		|      |-0      Secondary INTC
+		|      |-.         ______
+		|      |-.        |      |-32        Last INTC
+		|      |-.        |      |-.          ______
+		|______|<-31------|      |-.         |      |-64
+			          |      |-.         |      |-.
+			          |______|<-63-------|      |-.
+			                             |      |-.
+			                             |______|-95
+
+
+
 [AXI INTC](https://www.xilinx.com/support/documentation/ip_documentation/axi_intc/v4_1/pg099-axi-intc.pdf)
 
 
@@ -115,13 +133,63 @@ tables should not mislead the user into thinking they no longer need to
 register/connect interrupt handlers with this driver.
 
 
+# I2C
+
+
+
+# 6.4 Binary Semaphores Used for Synchronization
+
+The interrupt safe version of the Binary Semaphore API can be used to unblock a task each
+time a particular interrupt occurs, effectively synchronizing the task with the interrupt. This
+allows the majority of the interrupt event processing to be implemented within the
+synchronized task, with only a very fast and short portion remaining directly in the ISR. As
+described in the previous section, the binary semaphore is used to ‘defer’ interrupt processing
+to a task.
+
+
+
+
+
+# 7.3 Mutexes (and Binary Semaphores)
+
+A Mutex is a special type of binary semaphore that is used to control access to a resource that
+is shared between two or more tasks. The word MUTEX originates from ‘MUTual EXclusion’.
+configUSE_MUTEXES must be set to 1 in FreeRTOSConfig.h for mutexes to be available.
+
+
+Even though mutexes and binary semaphores share many characteristics, the scenario shown
+in Figure 63 (where a mutex is used for mutual exclusion) is completely different to that shown
+in Figure 53 (where a binary semaphore is used for synchronization). The primary difference
+is what happens to the semaphore after it has been obtained:
+
+* A semaphore that is used for mutual exclusion must always be returned.
+
+* A semaphore that is used for synchronization is normally discarded and not returned.
+
+![mutex.png](https://s19.postimg.org/l0mn26g7l/mutex.png)
+
+
+
+
+
+
+[Mastering the FreeRTOS Real Time Kernel - a Hands On Tutorial Guide](http://www.freertos.org/Documentation/161204_Mastering_the_FreeRTOS_Real_Time_Kernel-A_Hands-On_Tutorial_Guide.pdf)
+
+
+
+
+# SPI
+
+
+[spi协议及工作原理分析](http://blog.csdn.net/skyflying2012/article/details/11710801)
+
+
+[Overview of Linux kernel SPI support](https://www.kernel.org/doc/Documentation/spi/spi-summary)
+
 
 
 
 # lwIP 
-
-
-
 
 [lwIP - A Lightweight TCP/IP stack](http://savannah.nongnu.org/projects/lwip/)
 
@@ -130,6 +198,9 @@ register/connect interrupt handlers with this driver.
 
 
 # Reference
+
+[Mastering_the_FreeRTOS_Real_Time_Kernel-A_Hands-On_Tutorial_Guide](http://www.freertos.org/Documentation/161204_Mastering_the_FreeRTOS_Real_Time_Kernel-A_Hands-On_Tutorial_Guide.pdf)
+
 
 
 

@@ -298,10 +298,10 @@ FILE: ./include/linux/gfp.h
 
 #### bootmem
 
-	start_kernel(void)
-		setup_arch(char **cmdline_p)
-			paging_init(mdesc);
-				bootmem_init();
+
+	setup_arch(char **cmdline_p)
+		paging_init(mdesc);
+			bootmem_init();
 
 
 	typedef struct bootmem_data {
@@ -313,12 +313,6 @@ FILE: ./include/linux/gfp.h
 		struct list_head list;
 	} bootmem_data_t;
 
-
-[linux内存模型之bootmem分配器<一>](http://blog.csdn.net/gdt_a20/article/details/7229329)
-
-[Boot Memory Allocator](https://www.kernel.org/doc/gorman/html/understand/understand022.html)
-
-[Understanding the Linux Virtual Memory Manager](https://www.kernel.org/doc/gorman/html/understand/)
 
 
 #### buddy system
@@ -449,6 +443,30 @@ A Translation lookaside buffer (TLB) is a memory cache that is used to reduce th
 [Why using hierarchical page tables?](http://stackoverflow.com/questions/9834542/why-using-hierarchical-page-tables)
 
 [控制寄存器(CR0,CR1,CR2,CR3)和CR4](http://blog.chinaunix.net/uid-29512885-id-4575143.html)
+
+
+
+
+
+# MTD & Flash 
+
+
+
+
+[MTD子系统分析](http://blog.csdn.net/a1232345/article/details/46628979)
+
+[Flash设备驱动](http://blog.csdn.net/a1232345/article/details/46629151)
+
+
+
+
+# SPI
+
+[Overview of Linux kernel SPI support](https://www.kernel.org/doc/Documentation/spi/spi-summary)
+
+
+[关于IIC和SPI总线](http://blog.csdn.net/skyflying2012/article/details/11910173)
+
 
 
 

@@ -178,6 +178,24 @@ is what happens to the semaphore after it has been obtained:
 
 
 
+# Task Notifications
+
+Each RTOS task has a 32-bit notification value. An RTOS task notification is an event sent directly to a task that can unblock the receiving task, and optionally update the receiving task's notification value.
+Task notifications can update the receiving task's notification value in the following ways:
+
+- Set the receiving task's notification value without overwriting a previous value
+- Overwrite the receiving task's notification value
+- Set one or more bits in the receiving task's notification value
+- Increment the receiving task's notification value
+
+That flexibility allows task notifications to be used where previously it would have been necessary to create a separate queue, binary semaphore, counting semaphore or event group. Unblocking an RTOS task with a direct notification is 45% faster * and uses less RAM than unblocking a task with a binary semaphore.
+Notifications are sent using the xTaskNotify() and xTaskNotifyGive() API functions (and their interrupt safe equivalents), and remain pending until the receiving RTOS task calls either of the xTaskNotifyWait() or ulTaskNotifyTake() API functions.
+
+[xTaskNotifyFromISR()](http://www.freertos.org/xTaskNotifyFromISR.html)
+
+[RTOS Task Notifications](http://www.freertos.org/RTOS-task-notifications.html)
+
+
 # SPI
 
 
@@ -195,6 +213,8 @@ is what happens to the semaphore after it has been obtained:
 
 
 [LightWeight IP Application Examples](https://www.xilinx.com/support/documentation/application_notes/xapp1026.pdf)
+
+[SocketTest v3.0.0 Test My Socket](http://sockettest.sourceforge.net/)
 
 
 # Reference

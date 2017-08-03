@@ -74,6 +74,40 @@ Source files specific to a FreeRTOS port are contained within the `FreeRTOS/Sour
 A note to Linux users: FreeRTOS is developed and tested on a Windows host. 
 
 
+# Memory Management
+
+
+One embedded / real time system can have very different RAM and timing requirements to another - so a single RAM allocation algorithm will only ever be appropriate for a subset of applications.
+
+To get around this problem, FreeRTOS keeps the memory allocation API in its portable layer. The portable layer is outside of the source files that implement the core RTOS functionality, allowing an application specific implementation appropriate for the real time system being developed to be provided. When the RTOS kernel requires RAM, instead of calling malloc(), it instead calls pvPortMalloc(). When RAM is being freed, instead of calling free(), the RTOS kernel calls vPortFree().
+
+FreeRTOS offers several heap management schemes that range in complexity and features. It is also possible to provide your own heap implementation, and even to use two heap implementations simultaneously. Using two heap implementations simultaneously permits task stacks and other RTOS objects to be placed in fast internal RAM, and application data to be placed in slower external RAM.
+
+- Heap_3
+
+Heap_3.c uses the standard library malloc() and free() functions, so the size of the heap is defined by the linker configuration, and the configTOTAL_HEAP_SIZE setting has no affect. Heap_3 makes malloc() and free() thread-safe by temporarily suspending the FreeRTOS scheduler. Thread safety, and scheduler suspension, are both topics that are covered in Chapter 7, Resource Management.
+
+- Heap_4 
+
+Heap_4 uses a first fit algorithm to allocate memory. Unlike heap_2, heap_4 combines (coalescences) adjacent free blocks of memory into a single larger block, which minimizes the risk of memory fragmentation.  The first fit algorithm ensures pvPortMalloc() uses the first free block of memory that is large enough to hold the number of bytes requested. For example, consider the scenario where:
+The heap contains three blocks of free memory that, in the order in which they appear in the array, are 5 bytes, 200 bytes, and 100 bytes, respectively.  pvPortMalloc() is called to request 20 bytes of RAM.  The first free block of RAM into which the requested number of bytes will fit is the 200-byte block, so pvPortMalloc() splits the 200-byte block into one block of 20 bytes, and one block of 180 bytes1 , before returning a pointer to the 20-byte block. The new 180-byte block remains available to future calls to pvPortMalloc().
+
+
+##  Heap Related Utility Functions
+
+- The xPortGetFreeHeapSize() API Function
+
+- The xPortGetMinimumEverFreeHeapSize() API Function
+
+- Malloc Failed Hook Functions
+
+
+[FreeRTOS Stack and Heap Management](https://www.youtube.com/watch?v=bLQWB4H0TpE&t=83s)
+
+
+[Memory Management](http://www.freertos.org/a00111.html)
+
+
 
 
 # Interrupt
@@ -215,6 +249,8 @@ Notifications are sent using the xTaskNotify() and xTaskNotifyGive() API functio
 [LightWeight IP Application Examples](https://www.xilinx.com/support/documentation/application_notes/xapp1026.pdf)
 
 [SocketTest v3.0.0 Test My Socket](http://sockettest.sourceforge.net/)
+
+
 
 
 # Reference

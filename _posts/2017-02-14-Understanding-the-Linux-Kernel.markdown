@@ -75,178 +75,6 @@ Task State Segment(TSS), different for each processor in the system.
 
 FILE: ./include/linux/mm_types.h (version: Linux 4.0-rc1)
 
-	struct page {
-		/* First double word block */
-		unsigned long flags;		/* Atomic flags, some possibly
-						 * updated asynchronously */
-		union {
-			struct address_space *mapping;	/* If low bit clear, points to
-							 * inode address_space, or NULL.
-							 * If page mapped as anonymous
-							 * memory, low bit is set, and
-							 * it points to anon_vma object:
-							 * see PAGE_MAPPING_ANON below.
-							 */
-			void *s_mem;			/* slab first object */
-		};
-
-		/* Second double word */
-		struct {
-			union {
-				pgoff_t index;		/* Our offset within mapping. */
-				void *freelist;		/* sl[aou]b first free object */
-				bool pfmemalloc;	/* If set by the page allocator,
-							 * ALLOC_NO_WATERMARKS was set
-							 * and the low watermark was not
-							 * met implying that the system
-							 * is under some pressure. The
-							 * caller should try ensure
-							 * this page is only used to
-							 * free other pages.
-							 */
-			};
-
-			union {
-	#if defined(CONFIG_HAVE_CMPXCHG_DOUBLE) && \
-		defined(CONFIG_HAVE_ALIGNED_STRUCT_PAGE)
-				/* Used for cmpxchg_double in slub */
-				unsigned long counters;
-	#else
-				/*
-				 * Keep _count separate from slub cmpxchg_double data.
-				 * As the rest of the double word is protected by
-				 * slab_lock but _count is not.
-				 */
-				unsigned counters;
-	#endif
-
-				struct {
-
-					union {
-						/*
-						 * Count of ptes mapped in
-						 * mms, to show when page is
-						 * mapped & limit reverse map
-						 * searches.
-						 *
-						 * Used also for tail pages
-						 * refcounting instead of
-						 * _count. Tail pages cannot
-						 * be mapped and keeping the
-						 * tail page _count zero at
-						 * all times guarantees
-						 * get_page_unless_zero() will
-						 * never succeed on tail
-						 * pages.
-						 */
-						atomic_t _mapcount;
-
-						struct { /* SLUB */
-							unsigned inuse:16;
-							unsigned objects:15;
-							unsigned frozen:1;
-						};
-						int units;	/* SLOB */
-					};
-					atomic_t _count;		/* Usage count, see below. */
-				};
-				unsigned int active;	/* SLAB */
-			};
-		};
-
-		/* Third double word block */
-		union {
-			struct list_head lru;	/* Pageout list, eg. active_list
-						 * protected by zone->lru_lock !
-						 * Can be used as a generic list
-						 * by the page owner.
-						 */
-			struct {		/* slub per cpu partial pages */
-				struct page *next;	/* Next partial slab */
-	#ifdef CONFIG_64BIT
-				int pages;	/* Nr of partial slabs left */
-				int pobjects;	/* Approximate # of objects */
-	#else
-				short int pages;
-				short int pobjects;
-	#endif
-			};
-
-			struct slab *slab_page; /* slab fields */
-			struct rcu_head rcu_head;	/* Used by SLAB
-							 * when destroying via RCU
-							 */
-			/* First tail page of compound page */
-			struct {
-				compound_page_dtor *compound_dtor;
-				unsigned long compound_order;
-			};
-
-	#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && USE_SPLIT_PMD_PTLOCKS
-			pgtable_t pmd_huge_pte; /* protected by page->ptl */
-	#endif
-		};
-
-		/* Remainder is not double word aligned */
-		union {
-			unsigned long private;		/* Mapping-private opaque data:
-							 * usually used for buffer_heads
-							 * if PagePrivate set; used for
-							 * swp_entry_t if PageSwapCache;
-							 * indicates order in the buddy
-							 * system if PG_buddy is set.
-							 */
-	#if USE_SPLIT_PTE_PTLOCKS
-	#if ALLOC_SPLIT_PTLOCKS
-			spinlock_t *ptl;
-	#else
-			spinlock_t ptl;
-	#endif
-	#endif
-			struct kmem_cache *slab_cache;	/* SL[AU]B: Pointer to slab */
-			struct page *first_page;	/* Compound tail pages */
-		};
-
-	#ifdef CONFIG_MEMCG
-		struct mem_cgroup *mem_cgroup;
-	#endif
-
-		/*
-		 * On machines where all RAM is mapped into kernel address space,
-		 * we can simply calculate the virtual address. On machines with
-		 * highmem some memory is mapped into kernel virtual memory
-		 * dynamically, so we need a place to store that address.
-		 * Note that this field could be 16 bits on x86 ... ;)
-		 *
-		 * Architectures with slow multiplication can define
-		 * WANT_PAGE_VIRTUAL in asm/page.h
-		 */
-	#if defined(WANT_PAGE_VIRTUAL)
-		void *virtual;			/* Kernel virtual address (NULL if
-						   not kmapped, ie. highmem) */
-	#endif /* WANT_PAGE_VIRTUAL */
-
-	#ifdef CONFIG_KMEMCHECK
-		/*
-		 * kmemcheck wants to track the status of each byte in a page; this
-		 * is a pointer to such a status block. NULL if not tracked.
-		 */
-		void *shadow;
-	#endif
-
-	#ifdef LAST_CPUPID_NOT_IN_PAGE_FLAGS
-		int _last_cpupid;
-	#endif
-	}
-	/*
-	 * The struct page can be forced to be double word aligned so that atomic ops
-	 * on double words work. The SLUB allocator can make use of such a feature.
-	 */
-	#ifdef CONFIG_HAVE_ALIGNED_STRUCT_PAGE
-		__aligned(2 * sizeof(unsigned long))
-	#endif
-	;
-
 
 #### struct zone
 
@@ -299,9 +127,10 @@ FILE: ./include/linux/gfp.h
 #### bootmem
 
 
-	setup_arch(char **cmdline_p)
-		paging_init(mdesc);
-			bootmem_init();
+	start_kernel(void)
+		setup_arch(char **cmdline_p)
+			paging_init(mdesc);
+				bootmem_init();
 
 
 	typedef struct bootmem_data {
@@ -312,6 +141,9 @@ FILE: ./include/linux/gfp.h
 		unsigned long hint_idx;
 		struct list_head list;
 	} bootmem_data_t;
+
+
+[linux内存模型之bootmem分配器<一>](http://blog.csdn.net/gdt_a20/article/details/7229329)
 
 
 
@@ -326,6 +158,27 @@ FILE: ./include/linux/gfp.h
 
 
 [What is slab?](http://blog.csdn.net/ganggexiongqi/article/details/8921643)
+
+
+#### SLOB, SLAB, SLUB
+
+Slab allocators available
+
+* SLOB: K&R allocator (1991-1999)
+
+* SLAB: Solaris type allocator (1999-2008)
+
+* SLUB: Unqueued allocator (2008-today)
+
+Design philosophies
+
+* SLOB: As compact as possible
+
+* SLAB: As cache friendly as possible. Benchmark friendly.
+
+* SLUB: Simple and instruction cost counts. Superior Debugging. Defragmentation. Execution time friendly.
+
+[Slab allocators in the Linux Kernel: SLAB, SLOB, SLUB](https://events.linuxfoundation.org/sites/events/files/slides/slaballocators.pdf)
 
 
 
@@ -388,12 +241,15 @@ Like this,
 First, the .text, .data and .init sequences which provide the initialization of the kernel's own page tables (translate linear into physical addresses).
 
 * .text : 0xc0400000 - 0xc071ae6a   (3179 kB)
+
 The range where the kernel code resides.
 
 * .data : 0xc071ae6a - 0xc08feb78   (1935 kB)
+
 The range where the kernel data segments reside.
 
 * .init : 0xc0906000 - 0xc0973000   ( 436 kB)
+
 The range where the kernel's initial page tables reside.
 
 
@@ -401,19 +257,21 @@ The range where the kernel's initial page tables reside.
 Second, the usage of kernel space after initialization
 
 * lowmem  : 0xc0000000 - 0xf77fe000   ( 887 MB)
+
 The lowmem range can be used by the kernel to directly access physical addresses.
 This is not the full 1 GB, because the kernel always requires at least 128 MB of linear addresses to implement noncontiguous memory allocation and fix-mapped linear addresses.
 
 * vmalloc : 0xf7ffe000 - 0xff7fe000   ( 120 MB)
+
 Virtual memory allocation can allocate page frames based on a noncontiguous scheme. The main advantage of this schema is to avoid external fragmentation, this is used for swap areas, kernel modules or allocation of buffers to some I/O devices.
 
 * pkmap   : 0xff800000 - 0xffa00000   (2048 kB)
+
 The permanent kernel mapping allows the kernel to establish long-lasting mappings of high-memory page frames into the kernel address space. When a HIGHMEM page is mapped using kmap(), virtual addresses are assigned from here.
 
 * fixmap  : 0xffc57000 - 0xfffff000   (3744 kB)
+
 These are fix-mapped linear addresses which can refer to any physical address in the RAM, not just the last 1 GB like the lowmem addresses. Fix-mapped linear addresses are a bit more efficient than their lowmem and pkmap colleagues. There are dedicated page table descriptors assigned for fixed mapping, and mappings of HIGHMEM pages using kmap_atomic are allocated from here.
-
-
 
 
 Call tree, 
@@ -424,6 +282,10 @@ Call tree,
 
 [What does the Virtual kernel Memory Layout in dmesg imply?](https://unix.stackexchange.com/questions/5124/what-does-the-virtual-kernel-memory-layout-in-dmesg-imply)
 
+[Turning on an ARM MMU and Living to tell the Tale: Some Theory](http://www.embedded-bits.co.uk/2011/mmutheory/)
+
+[Turning on an ARM MMU and Living to tell the tale: The code](https://www.embedded-bits.co.uk/2011/mmucode/)
+
 
 #### TLB(Translation lookaside buffer)
 
@@ -431,6 +293,54 @@ A Translation lookaside buffer (TLB) is a memory cache that is used to reduce th
 
 
 [Translation lookaside buffer](https://en.wikipedia.org/wiki/Translation_lookaside_buffer)
+
+
+
+# [Understanding the Linux Virtual Memory Manager](https://www.kernel.org/doc/gorman/html/understand/)
+
+- 4.3  Process Address Space Descriptor
+
+The process address space is described by the mm_struct struct meaning that only one exists for each process and is shared between userspace threads. In fact, threads are identified in the task list by finding all task_structs which have pointers to the same mm_struct.
+
+- 4.4 Memory Regions
+
+Each region is represented by a `vm_area_struct` which never overlap and represent a set of addresses with the same protection and purpose. Examples of a region include a read-only shared library loaded into the address space or the process heap. A full list of mapped regions a process has may be viewed via the proc interface at /proc/PID/maps where PID is the process ID of the process that is to be examined
+
+e.g /proc/3981/maps
+
+      b7520000-b7523000 r-xp 00000000 08:01 527837     /lib/i386-linux-gnu/libdl-2.19.so
+      b7523000-b7524000 r--p 00002000 08:01 527837     /lib/i386-linux-gnu/libdl-2.19.so
+      b7524000-b7525000 rw-p 00003000 08:01 527837     /lib/i386-linux-gnu/libdl-2.19.so
+
+
+If the region is backed by a file, the struct file is available through the vm_file field which has a pointer to the struct inode. The inode is used to get the struct address_space which has all the private information about the file including a set of pointers to filesystem functions which perform the filesystem specific operations such as reading and writing pages to disk.
+
+	./include/linux/mm_types.h
+
+	struct vm_area_struct {
+		struct mm_struct *vm_mm;	/* The address space we belong to. */
+		struct file * vm_file;		/* File we map to (can be NULL). */
+	};
+
+
+	./include/linux/fs.h
+
+	struct file {
+		struct inode		*f_inode;	/* cached value */
+	};
+
+	struct inode {
+		struct address_space	*i_mapping;
+	};
+
+[![process_address_space_structures.png](https://s19.postimg.org/r1h5v64r7/process_address_space_structures.png)](https://postimg.org/image/greqvxevj/)
+
+
+
+
+
+
+
 
 ### Reference
 
@@ -452,6 +362,9 @@ A Translation lookaside buffer (TLB) is a memory cache that is used to reduce th
 
 
 
+
+
+[General MTD documentation](http://www.linux-mtd.infradead.org/doc/general.html#L_overview)
 
 [MTD子系统分析](http://blog.csdn.net/a1232345/article/details/46628979)
 

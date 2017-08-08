@@ -9,12 +9,7 @@ categories: jekyll update
 # Describing Physical Memory
 
 
-
-
-
-[relationship-between-nodes-zones-and-pages.png](https://postimg.org/image/luryo8aj3/)
-
-
+[![relationship-between-nodes-zones-and-pages.png](https://s19.postimg.org/ud1eskh1v/relationship-between-nodes-zones-and-pages.png)](https://postimg.org/image/luryo8aj3/)
 
 	/*
 	 * On NUMA machines, each NUMA node would have a pg_data_t to describe
